@@ -17,19 +17,31 @@ public class Tokenizer {
     try {
       rdr = new LookAheadReader(new FileInputStream(path));
       while (true) {
-        int ch = rdr.read();
-        if (ch == -1) {
+        int val = rdr.read();
+        if (val == -1) {
           break;
         }
-        if (Character.isLetter(ch)) {
+        if (Character.isLetter(val)) {
           Token tk = new Token(Token.SYMBOL);
           StringBuffer sb = new StringBuffer();
+          sb.append((char) val);
           while (Character.isLetter(rdr.peek()) || Character.isDigit(rdr.peek()) || rdr.peek() == '_') {
-            sb.append(rdr.read());
+            sb.append((char) rdr.read());
           }
           tk.setValue(sb.toString());
           list.add(tk);
-          System.out.println(tk.getValue());
+        } else if (val == '"') {
+          Token tk = new Token(Token.STRING);
+          StringBuffer sb = new StringBuffer();
+          while (true) {
+            if (rdr.peek() == '\\') {
+              rdr.read();
+            }
+            sb.append((char) rdr.read());
+          }
+          rdr.read();
+          tk.setValue(sb.toString());
+          list.add(tk);
         }
       }
     } catch(Exception e) {

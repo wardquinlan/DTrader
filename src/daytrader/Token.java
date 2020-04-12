@@ -18,13 +18,12 @@ public class Token {
   public static final int GTE      = 14; // >=
   public static final int SEMI     = 16; // ;
   public static final int COMMA    = 17; // ,
-  public static final int DQUOTE   = 18; // "
-  public static final int COMMENT  = 19; // --
-  public static final int PLUS     = 20; // +
-  public static final int MINUS    = 21; // - 
-  public static final int MULT     = 22; // *
-  public static final int DIVIDE   = 23; // /
-  public static final int EXP      = 24; // **
+  public static final int COMMENT  = 18; // --
+  public static final int PLUS     = 19; // +
+  public static final int MINUS    = 20; // - 
+  public static final int MULT     = 21; // *
+  public static final int DIVIDE   = 22; // /
+  public static final int EXP      = 23; // **
   
   private int type;
   private Object value;
@@ -42,5 +41,6 @@ public class Token {
   }
   
   public void setValue(Object object) {
+    value = object;
   }
 }
