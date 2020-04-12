@@ -34,12 +34,21 @@ public class Tokenizer {
           Token tk = new Token(Token.STRING);
           StringBuffer sb = new StringBuffer();
           while (true) {
+            if (rdr.peek() == '"') {
+              rdr.read();
+              break;
+            }
+            if (rdr.peek() == -1) {
+              throw new Exception("unterminated string");
+            }
             if (rdr.peek() == '\\') {
               rdr.read();
+              if (rdr.peek() == -1) {
+                throw new Exception("unterminated string");
+              }
             }
             sb.append((char) rdr.read());
           }
-          rdr.read();
           tk.setValue(sb.toString());
           list.add(tk);
         }
