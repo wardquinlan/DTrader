@@ -39,12 +39,12 @@ public class Tokenizer {
               break;
             }
             if (rdr.peek() == -1) {
-              throw new Exception("unterminated string");
+              throw new Exception("unterminated string: " + sb.toString());
             }
             if (rdr.peek() == '\\') {
               rdr.read();
               if (rdr.peek() == -1) {
-                throw new Exception("unterminated string");
+                throw new Exception("unterminated string: " + sb.toString());
               }
             }
             sb.append((char) rdr.read());
