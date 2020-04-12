@@ -30,6 +30,18 @@ public class Tokenizer {
           }
           tk.setValue(sb.toString());
           list.add(tk);
+        } else if (val == '.' || Character.isDigit(val)) {
+          Token tk = new Token(Token.NUMBER);
+          StringBuffer sb = new StringBuffer();
+          sb.append((char) val);
+          while (rdr.peek() == '.' || Character.isDigit(rdr.peek())) {
+            if (rdr.peek() == '.' && sb.toString().contains(".")) {
+              throw new Exception("misformatted value: " + sb);
+            }
+            sb.append((char) rdr.read());
+          }
+          tk.setValue(sb.toString());
+          list.add(tk);
         } else if (val == '"') {
           Token tk = new Token(Token.STRING);
           StringBuffer sb = new StringBuffer();
@@ -39,12 +51,12 @@ public class Tokenizer {
               break;
             }
             if (rdr.peek() == -1) {
-              throw new Exception("unterminated string: " + sb.toString());
+              throw new Exception("unterminated string: " + sb);
             }
             if (rdr.peek() == '\\') {
               rdr.read();
               if (rdr.peek() == -1) {
-                throw new Exception("unterminated string: " + sb.toString());
+                throw new Exception("unterminated string: " + sb);
               }
             }
             sb.append((char) rdr.read());
