@@ -38,7 +38,19 @@ public class Token {
     map.put(RBRACE,  "RBRACE");
     map.put(ASSIGN,  "ASSIGN");
     map.put(EQ,      "EQUAL");
+    map.put(NE,      "NE");
+    map.put(LT,      "LT");
+    map.put(LTE,     "LTE");
+    map.put(GT,      "GT");
+    map.put(GTE,     "GTE");
+    map.put(SEMI,    "SEMI");
+    map.put(COMMA,   "COMMA");
     map.put(COMMENT, "COMMENT");
+    map.put(PLUS,    "PLUS");
+    map.put(MINUS,   "MINUS");
+    map.put(MULT,    "MULT");
+    map.put(DIVIDE,  "DIVIDE");
+    map.put(EXP,     "EXP");
   }
   
   private int type;

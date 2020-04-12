@@ -21,7 +21,14 @@ public class Tokenizer {
         if (val == -1) {
           break;
         }
-        if (Character.isLetter(val)) {
+        if (val == '-' && rdr.peek() == '-') {
+          while (true) {
+            val = rdr.read();
+            if (val == -1 || val == 0x0a) {
+              break;
+            }
+          }
+        } else if (Character.isLetter(val)) {
           Token tk = new Token(Token.SYMBOL);
           StringBuffer sb = new StringBuffer();
           sb.append((char) val);
@@ -66,6 +73,21 @@ public class Tokenizer {
           }
           tk.setValue(sb.toString());
           list.add(tk);
+        } else if (val == '=' && rdr.peek() == '=') {
+          Token tk = new Token(Token.EQ);
+          list.add(tk);
+        } else if (val == '!' && rdr.peek() == '=') {
+          Token tk = new Token(Token.NE);
+          list.add(tk);
+        } else if (val == '<' && rdr.peek() == '=') {
+          Token tk = new Token(Token.LTE);
+          list.add(tk);
+        } else if (val == '>' && rdr.peek() == '=') {
+          Token tk = new Token(Token.GTE);
+          list.add(tk);
+        } else if (val == '*' && rdr.peek() == '*') {
+          Token tk = new Token(Token.EXP);
+          list.add(tk);
         } else if (val == '(') {
           Token tk = new Token(Token.LPAREN);
           list.add(tk);
@@ -78,19 +100,33 @@ public class Tokenizer {
         } else if (val == '}') {
           Token tk = new Token(Token.RBRACE);
           list.add(tk);
-        } else if (val == '=' && rdr.peek() == '=') {
-          Token tk = new Token(Token.EQ);
-          list.add(tk);
         } else if (val == '=') {
           Token tk = new Token(Token.ASSIGN);
           list.add(tk);
-        } else if (val == '-' && rdr.peek() == '-') {
-          while (true) {
-            val = rdr.read();
-            if (val == -1 || val == 0x0a) {
-              break;
-            }
-          }
+        } else if (val == '<') {
+          Token tk = new Token(Token.LT);
+          list.add(tk);
+        } else if (val == '>') {
+          Token tk = new Token(Token.GT);
+          list.add(tk);
+        } else if (val == ';') {
+          Token tk = new Token(Token.SEMI);
+          list.add(tk);
+        } else if (val == ',') {
+          Token tk = new Token(Token.COMMA);
+          list.add(tk);
+        } else if (val == '+') {
+          Token tk = new Token(Token.PLUS);
+          list.add(tk);
+        } else if (val == '-') {
+          Token tk = new Token(Token.MINUS);
+          list.add(tk);
+        } else if (val == '*') {
+          Token tk = new Token(Token.MULT);
+          list.add(tk);
+        } else if (val == '/') {
+          Token tk = new Token(Token.DIVIDE);
+          list.add(tk);
         }
       }
     } catch(Exception e) {
