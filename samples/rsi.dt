@@ -1,0 +1,77 @@
+include "../includes/colours.dt";
+include "../includes/formulas.dt";
+
+-- variables (i.e. scalars) are implied
+-- these are all global variables
+K0 = 14;
+K1 = 30;
+K2 = 70;
+CASH = 10000;
+COMMISSION = 10;
+SIZE = 100; -- 100 shares
+
+system RSI {
+	init {
+		set_commission(COMMISSION);
+		set_cash_balance(CASH);
+		-- could also do something like:
+		set_cash($1);
+		set_commission($2);
+	}
+
+	when (rsi(ABX, K0) < K1 AND position_size(ABX) == 0) {
+		buy(ABX, SIZE); -- buy 100 shares
+	}
+
+	when (rsi(ABX, K0) > K2 AND position_size(ABX) != 0) {
+		sell(ABX, position_size(ABX)); -- sell entire position
+	}
+}
+
+chart RSI {
+	-- these are variables local to this chart
+	K0 = 14;
+	RSI_ALT = rsi(ABX, 5);
+	AVG = avg(ABX, 40);
+
+	plot {
+		set_label("Price");
+		set_size(70);
+		set_horizontal_lines(30, 40, 50, 60, 70);
+		add_line(ABX, #0000ff);
+		add_line(AVG, YELLOW);
+	}
+	plot {
+		set_label("RSI");
+		set_size(30); // if not specified implicitly gets set to 30
+		set_horizontal_lines(0, 30, 50, 70, 100);
+		add_line(rsi(ABX, K0), RED); -- RED defined in include file
+		add_line(RSI_ALT, BLUE);
+	}
+}
+
+-- functions which come to mind:
+--   position_size() - returns current position size
+--   entry_price() - returns (average) entry price (used for stops)
+--   trailing_price() - returns (average) trailing entry price (used for stops)
+--   time() - "16:00"
+--   date() - "2020-04-22"
+--   rsi()
+--   sar()
+--   buy()
+--   sell()
+--   avg()
+--   min()
+--   max()
+--   quit() - stop processing rules for this iteration
+--   set_commission()
+--   set_cash_balance()
+--   cash_balance()
+--   set_label()
+--   set_size()
+--   set_horizontal_lines()
+--   add_line()
+--   add_bar()
+--   add_point()
+
+
