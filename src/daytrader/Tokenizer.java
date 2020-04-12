@@ -84,6 +84,13 @@ public class Tokenizer {
         } else if (val == '=') {
           Token tk = new Token(Token.ASSIGN);
           list.add(tk);
+        } else if (val == '-' && rdr.peek() == '-') {
+          while (true) {
+            val = rdr.read();
+            if (val == -1 || val == 0x0a) {
+              break;
+            }
+          }
         }
       }
     } catch(Exception e) {

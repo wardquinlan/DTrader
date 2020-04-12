@@ -38,6 +38,7 @@ public class Token {
     map.put(RBRACE,  "RBRACE");
     map.put(ASSIGN,  "ASSIGN");
     map.put(EQ,      "EQUAL");
+    map.put(COMMENT, "COMMENT");
   }
   
   private int type;
