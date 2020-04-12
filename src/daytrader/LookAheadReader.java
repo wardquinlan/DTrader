@@ -9,18 +9,18 @@ public class LookAheadReader {
   private Integer next;
   
   public LookAheadReader(InputStream inputStream) {
-    this.inputStreamReader = new InputStreamReader(inputStream);
+    inputStreamReader = new InputStreamReader(inputStream);
   }
   
   public int read() throws IOException {
-    if (this.inputStreamReader == null) {
+    if (inputStreamReader == null) {
       throw new IOException("reader already closed");
     }
-    if (this.next == null) {
-      this.next = inputStreamReader.read();
+    if (next == null) {
+      next = inputStreamReader.read();
     }
-    int tmp = this.next; 
-    this.next = inputStreamReader.read();
+    int tmp = next; 
+    next = inputStreamReader.read();
     return tmp;
   }
   
@@ -29,7 +29,7 @@ public class LookAheadReader {
   }
   
   public void close() throws IOException {
-    this.inputStreamReader.close();
-    this.inputStreamReader = null;
+    inputStreamReader.close();
+    inputStreamReader = null;
   }
 }
