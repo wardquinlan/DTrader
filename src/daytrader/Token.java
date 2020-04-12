@@ -1,5 +1,8 @@
 package daytrader;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Token {
   public static final int SYMBOL   = 0;  // some_symbol
   public static final int DOUBLE   = 1;  // 3.14159
@@ -25,6 +28,12 @@ public class Token {
   public static final int DIVIDE   = 22; // /
   public static final int EXP      = 23; // **
   
+  public static Map<Integer, String> map = new HashMap<Integer, String>();
+  static {
+    map.put(SYMBOL, "SYMBOL");
+    map.put(STRING, "STRING");
+  }
+  
   private int type;
   private Object value;
 	
@@ -42,5 +51,10 @@ public class Token {
   
   public void setValue(Object object) {
     value = object;
+  }
+  
+  @Override
+  public String toString() {
+    return "Token[" + map.get(type) + "]=" + value;
   }
 }
