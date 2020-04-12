@@ -34,6 +34,10 @@ public class Token {
     map.put(STRING,  "STRING");
     map.put(LPAREN,  "LPAREN");
     map.put(RPAREN,  "RPAREN");
+    map.put(LBRACE,  "LBRACE");
+    map.put(RBRACE,  "RBRACE");
+    map.put(ASSIGN,  "ASSIGN");
+    map.put(EQ,      "EQUAL");
   }
   
   private int type;
@@ -57,6 +61,6 @@ public class Token {
   
   @Override
   public String toString() {
-    return "Token[" + map.get(type) + "]=" + value;
+    return "Token[" + map.get(type) + "]" + (value == null ? "" : "=" + value);
   }
 }

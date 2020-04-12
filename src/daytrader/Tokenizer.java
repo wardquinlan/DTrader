@@ -63,6 +63,24 @@ public class Tokenizer {
           }
           tk.setValue(sb.toString());
           list.add(tk);
+        } else if (val == '(') {
+          Token tk = new Token(Token.LPAREN);
+          list.add(tk);
+        } else if (val == ')') {
+          Token tk = new Token(Token.RPAREN);
+          list.add(tk);
+        } else if (val == '{') {
+          Token tk = new Token(Token.LBRACE);
+          list.add(tk);
+        } else if (val == '}') {
+          Token tk = new Token(Token.RBRACE);
+          list.add(tk);
+        } else if (val == '=' && rdr.peek() == '=') {
+          Token tk = new Token(Token.EQ);
+          list.add(tk);
+        } else if (val == '=') {
+          Token tk = new Token(Token.ASSIGN);
+          list.add(tk);
         }
       }
     } catch(Exception e) {

@@ -1,5 +1,9 @@
-25"test"
-3.14
-"hello world"
-sar
+include "../includes/colours.dt";
+include "../includes/formulas.dt";
+
+-- variables (i.e. scalars) are implied
+-- these are all global variables
+K0 = 14;
+K1 = 30;
+K2 = 70;
 
