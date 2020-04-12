@@ -6,4 +6,6 @@ include "../includes/formulas.dt";
 K0 = 14;
 K1 = 30;
 K2 = 70;
+BLUE = #0000ff;
+PI = 3.14159
 

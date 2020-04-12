@@ -38,7 +38,6 @@ public class Tokenizer {
           tk.setValue(sb.toString());
           list.add(tk);
         } else if (val == '.' || Character.isDigit(val)) {
-          Token tk = new Token(Token.NUMBER);
           StringBuffer sb = new StringBuffer();
           sb.append((char) val);
           while (rdr.peek() == '.' || Character.isDigit(rdr.peek())) {
@@ -50,7 +49,22 @@ public class Tokenizer {
           if (sb.toString().equals(".")) {
             throw new Exception("misformatted value: " + sb);
           }
-          tk.setValue(sb.toString());
+          if (sb.toString().contains(".")) {
+            Token tk = new Token(Token.REAL);
+            tk.setValue(Double.parseDouble(sb.toString()));
+            list.add(tk);
+          } else {
+            Token tk = new Token(Token.INTEGER);
+            tk.setValue(Integer.parseInt(sb.toString()));
+            list.add(tk);
+          }
+        } else if (val == '#') {
+          Token tk = new Token(Token.INTEGER);
+          StringBuffer sb = new StringBuffer();
+          while (Character.isDigit(rdr.peek()) || (rdr.peek() >= 'a' && rdr.peek() <= 'f') || (rdr.peek() >= 'A' && rdr.peek() <= 'F')) {
+            sb.append((char) rdr.read());
+          }
+          tk.setValue(Integer.parseInt(sb.toString(), 16));
           list.add(tk);
         } else if (val == '"') {
           Token tk = new Token(Token.STRING);
