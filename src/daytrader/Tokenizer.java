@@ -40,6 +40,9 @@ public class Tokenizer {
             }
             sb.append((char) rdr.read());
           }
+          if (sb.toString().equals(".")) {
+            throw new Exception("misformatted value: " + sb);
+          }
           tk.setValue(sb.toString());
           list.add(tk);
         } else if (val == '"') {
