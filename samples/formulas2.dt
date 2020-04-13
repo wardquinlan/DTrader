@@ -1,3 +1,2 @@
-include "formulas2.dt";
 S = sar(GSPC, 0.02, 0.20);
 

@@ -23,9 +23,13 @@ public class Tokenizer {
   }
   
   public List<Token> tokenize(int level) throws Exception {
+    if (level > MAX_LEVEL) {
+      throw new Exception("exceeded maximum include level");
+    }
     LookAheadReader rdr = null;
     List<Token> list = new ArrayList<Token>();
     try {
+      log.info("attempting to open " + file.getPath() + " (level " + level + ")");
       rdr = new LookAheadReader(new FileInputStream(file));
       while (true) {
         int val = rdr.read();
@@ -163,13 +167,10 @@ public class Tokenizer {
         }
       }
     }
-    return postTokenize(list, level + 1);
+    return postTokenize(list, level);
   }
   
   private List<Token> postTokenize(List<Token> list, int level) throws Exception {
-    if (level == MAX_LEVEL) {
-      throw new Exception("exceeded maximum include level");
-    }
     List<Token> listNew = new ArrayList<Token>();
     for (int i = 0; i < list.size(); i++) {
       Token tk = list.get(i);
@@ -191,7 +192,6 @@ public class Tokenizer {
         if (tk.getType() != Token.SEMI) {
           throw new Exception("misformatted include statement");
         }
-        System.out.println(file.getParent() + File.pathSeparator + path);
         Tokenizer tokenizer = new Tokenizer(file.getParent() + "/" + path);
         listNew.addAll(tokenizer.tokenize(level + 1));
       } else {
