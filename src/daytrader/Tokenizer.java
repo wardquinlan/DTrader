@@ -154,7 +154,7 @@ public class Tokenizer {
           Token tk = new Token(Token.MULT);
           list.add(tk);
         } else if (val == '/') {
-          Token tk = new Token(Token.DIVIDE);
+          Token tk = new Token(Token.DIV);
           list.add(tk);
         }
       }

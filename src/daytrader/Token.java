@@ -25,7 +25,7 @@ public class Token {
   public static final int PLUS     = 18; // +
   public static final int MINUS    = 19; // - 
   public static final int MULT     = 20; // *
-  public static final int DIVIDE   = 21; // /
+  public static final int DIV      = 21; // /
   public static final int EXP      = 22; // **
   
   public static Map<Integer, String> map = new HashMap<Integer, String>();
@@ -51,7 +51,7 @@ public class Token {
     map.put(PLUS,    "PLUS");
     map.put(MINUS,   "MINUS");
     map.put(MULT,    "MULT");
-    map.put(DIVIDE,  "DIVIDE");
+    map.put(DIV,     "DIV");
     map.put(EXP,     "EXP");
   }
   
