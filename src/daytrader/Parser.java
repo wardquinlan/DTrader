@@ -87,20 +87,18 @@ public class Parser {
       return tk.getValue();
     }
     if (tk.getType() == Token.SYMBOL) {
-      if (!itr.hasNext()) {
-        if (symbolTable.get(tk.getValue()) == null) {
-          throw new Exception("uninitialized symbol: " + tk.getValue());
-        }
-        return symbolTable.get(tk.getValue());
-      }
-      String name = (String) tk.getValue();
-      tk = itr.next();
-      if (tk.getType() == Token.ASSIGN) {
+      if (itr.hasNext() && itr.peek().getType() == Token.ASSIGN) {
+        itr.next();
         Object val = expression(itr);
-        symbolTable.put(name, val);
+        symbolTable.put((String) tk.getValue(), val);
         return val;
       }
+      Object val = symbolTable.get(tk.getValue());
+      if (val == null) {
+        throw new Exception("uninitialized symbol: " + tk.getValue());
+      }
+      return val;
     }
-    return null;
+    throw new Exception("unsupported primary: " + tk);
   }
 }

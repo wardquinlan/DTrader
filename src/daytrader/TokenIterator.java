@@ -13,19 +13,19 @@ public class TokenIterator implements Iterator<Token> {
   
   public TokenIterator(List<Token> list) {
     this.list = list;
-    idx = 0;
+    idx = -1;
   }
   
   public boolean hasNext() {
-    return (idx == list.size());
-  }
-  
-  public Token next() {
-    return list.get(idx++);
+    return (idx != (list.size() - 1));
   }
   
   public Token peek() {
-    return list.get(idx);
+    return list.get(idx + 1);
+  }
+  
+  public Token next() {
+    return list.get(++idx);
   }
   
   public void remove() {
