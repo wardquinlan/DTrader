@@ -8,10 +8,14 @@ import org.apache.commons.logging.LogFactory;
 public class DayTrader {
   private static Log log = LogFactory.getFactory().getInstance(DayTrader.class);
   public static void main(String[] args) {
-    Tokenizer tokenizer = new Tokenizer();
-    List<Token> tokens = tokenizer.getTokens("/home/ward/workspace/daytrader/samples/samp1.dt");
-    for (Token tk: tokens) {
-      System.out.println(tk);
+    try {
+      Tokenizer tokenizer = new Tokenizer("samples/samp2.dt");
+      List<Token> tokens = tokenizer.tokenize();
+      for (Token tk: tokens) {
+        System.out.println(tk);
+      }
+    } catch(Exception e) {
+      log.error(e);
     }
   }
 }

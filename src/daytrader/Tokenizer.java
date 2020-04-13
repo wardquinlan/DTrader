@@ -1,5 +1,6 @@
 package daytrader;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,12 +11,22 @@ import org.apache.commons.logging.LogFactory;
 
 public class Tokenizer {
   private static Log log = LogFactory.getFactory().getInstance(Tokenizer.class);
+  private static final int MAX_LEVEL = 2;
+  private File file;
   
-  public List<Token> getTokens(String path) {
+  public Tokenizer(String path) {
+    file = new File(path);
+  }
+  
+  public List<Token> tokenize() throws Exception {
+    return tokenize(0);
+  }
+  
+  public List<Token> tokenize(int level) throws Exception {
     LookAheadReader rdr = null;
     List<Token> list = new ArrayList<Token>();
     try {
-      rdr = new LookAheadReader(new FileInputStream(path));
+      rdr = new LookAheadReader(new FileInputStream(file));
       while (true) {
         int val = rdr.read();
         if (val == -1) {
@@ -143,8 +154,6 @@ public class Tokenizer {
           list.add(tk);
         }
       }
-    } catch(Exception e) {
-      log.error(e);
     } finally {
       if (rdr != null) {
         try {
@@ -154,6 +163,41 @@ public class Tokenizer {
         }
       }
     }
-    return list;
+    return postTokenize(list, level + 1);
+  }
+  
+  private List<Token> postTokenize(List<Token> list, int level) throws Exception {
+    if (level == MAX_LEVEL) {
+      throw new Exception("exceeded maximum include level");
+    }
+    List<Token> listNew = new ArrayList<Token>();
+    for (int i = 0; i < list.size(); i++) {
+      Token tk = list.get(i);
+      if (tk.getType() == Token.SYMBOL && tk.getValue().equals("include")) {
+        i++;
+        if (i == list.size()) {
+          throw new Exception("misformatted include statement");
+        }
+        tk = list.get(i);
+        if (tk.getType() != Token.STRING) {
+          throw new Exception("misformatted include statement");
+        }
+        String path = (String) tk.getValue();
+        i++;
+        if (i == list.size()) {
+          throw new Exception("misformatted include statement");
+        }
+        tk = list.get(i);
+        if (tk.getType() != Token.SEMI) {
+          throw new Exception("misformatted include statement");
+        }
+        System.out.println(file.getParent() + File.pathSeparator + path);
+        Tokenizer tokenizer = new Tokenizer(file.getParent() + "/" + path);
+        listNew.addAll(tokenizer.tokenize(level + 1));
+      } else {
+        listNew.add(tk);
+      }
+    }
+    return listNew;
   }
 }
