@@ -41,6 +41,39 @@ public class Parser {
   
   private Object expression(TokenIterator itr) throws Exception {
     Object val1 = term(itr);
+    while (true) {
+      if (!itr.hasNext()) {
+        break;
+      }
+      Token tk = itr.peek();
+      if (tk.getType() == Token.PLUS) {
+        itr.next();
+        Object val2 = term(itr);
+        if (val1 instanceof Integer && val2 instanceof Integer) {
+          val1 = new Integer((Integer) val1 + (Integer) val2);
+        } else if (val1 instanceof Integer && val2 instanceof Double) {
+          val1 = new Double((Integer) val1 + (Double) val2);
+        } else if (val1 instanceof Double && val2 instanceof Integer) {
+          val1 = new Double((Double) val1 + (Integer) val2);
+        } else {
+          val1 = new Double((Double) val1 + (Double) val2);
+        }
+      } else if (tk.getType() == Token.MINUS) {
+        itr.next();
+        Object val2 = term(itr);
+        if (val1 instanceof Integer && val2 instanceof Integer) {
+          val1 = new Integer((Integer) val1 - (Integer) val2);
+        } else if (val1 instanceof Integer && val2 instanceof Double) {
+          val1 = new Double((Integer) val1 - (Double) val2);
+        } else if (val1 instanceof Double && val2 instanceof Integer) {
+          val1 = new Double((Double) val1 - (Integer) val2);
+        } else {
+          val1 = new Double((Double) val1 - (Double) val2);
+        }
+      } else {
+        break;
+      }
+    }
     return val1;
   }
   
