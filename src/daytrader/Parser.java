@@ -68,13 +68,25 @@ public class Parser {
         itr.next();
         Object val2 = primary(itr);
         if (val1 instanceof Integer && val2 instanceof Integer) {
+          if ((Integer) val2 == 0) {
+            throw new Exception("divide by 0");
+          }
           val1 = new Integer((Integer) val1 / (Integer) val2);
         } else if (val1 instanceof Integer && val2 instanceof Double) {
+          if ((Double) val2 == 0d) {
+            throw new Exception("divide by 0");
+          }
           val1 = new Double((Integer) val1 / (Double) val2);
         } else if (val1 instanceof Double && val2 instanceof Integer) {
+          if ((Integer) val2 == 0) {
+            throw new Exception("divide by 0");
+          }
           val1 = new Double((Double) val1 / (Integer) val2);
         } else {
           val1 = new Double((Double) val1 / (Double) val2);
+          if ((Double) val2 == 0d) {
+            throw new Exception("divide by 0");
+          }
         }
       } else {
         break;
