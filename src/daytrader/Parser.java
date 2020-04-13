@@ -13,6 +13,12 @@ public class Parser {
   }
   
   public void parse(Iterator<Token> itr) throws Exception {
+    while (itr.hasNext()) {
+      parseStatement(itr);
+    }
+  }
+  
+  public void parseStatement(Iterator<Token> itr) throws Exception {
     List<Token> statement = new ArrayList<Token>();
     while (true) {
       if (!itr.hasNext()) {
