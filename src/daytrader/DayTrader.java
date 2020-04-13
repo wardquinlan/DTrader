@@ -11,9 +11,8 @@ public class DayTrader {
     try {
       Tokenizer tokenizer = new Tokenizer("samples/samp2.dt");
       List<Token> tokens = tokenizer.tokenize();
-      for (Token tk: tokens) {
-        System.out.println(tk);
-      }
+      Parser parser = new Parser();
+      parser.parse(tokens.iterator());
     } catch(Exception e) {
       log.error(e);
     }
