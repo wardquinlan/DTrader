@@ -161,10 +161,10 @@ public class Parser {
       if (tk.getType() != Token.LPAREN) {
         throw new Exception("invalid function call: " + funcName);
       }
+      if (!itr.hasNext() || itr.peek().getType() == Token.COMMA) {
+        throw new Exception("invalid function call: " + funcName);
+      }
       while (itr.hasNext() && itr.peek().getType() != Token.RPAREN) {
-        if (itr.peek().getType() == Token.COMMA) {
-          itr.next();
-        }
         Object val = expression(itr);
         System.out.println("***" + val);
         if (!itr.hasNext()) {
