@@ -152,6 +152,25 @@ public class Parser {
       }
       return val;
     }
+    if (tk.getType() == Token.FUNC) {
+      String funcName = (String) tk.getValue();
+      if (!itr.hasNext()) {
+        throw new Exception("invalid function call: " + funcName);
+      }
+      tk = itr.next();
+      if (tk.getType() != Token.LPAREN) {
+        throw new Exception("invalid function call: " + funcName);
+      }
+      Object val = expression(itr);
+      System.out.println("***" + val);
+      if (!itr.hasNext()) {
+        throw new Exception("invalid function call: " + funcName);
+      }
+      tk = itr.next();
+      if (tk.getType() != Token.RPAREN) {
+        throw new Exception("invalid function call: " + funcName);
+      }
+    }
     throw new Exception("unsupported primary: " + tk);
   }
 }
