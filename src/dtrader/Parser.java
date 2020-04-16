@@ -133,10 +133,7 @@ public class Parser {
       throw new Exception("unexpected end of statement");
     }
     Token tk = itr.next();
-    if (tk.getType() == Token.INTEGER) {
-      return tk.getValue();
-    }
-    if (tk.getType() == Token.REAL) {
+    if (tk.getType() == Token.INTEGER || tk.getType() == Token.REAL || tk.getType() == Token.STRING) {
       return tk.getValue();
     }
     if (tk.getType() == Token.SYMBOL) {
