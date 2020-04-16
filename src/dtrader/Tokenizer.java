@@ -1,4 +1,4 @@
-package daytrader;
+package dtrader;
 
 import java.io.File;
 import java.io.FileInputStream;

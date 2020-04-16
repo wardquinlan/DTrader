@@ -1,4 +1,4 @@
-package daytrader;
+package dtrader;
 
 import java.util.Iterator;
 import java.util.List;

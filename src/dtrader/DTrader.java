@@ -1,4 +1,4 @@
-package daytrader;
+package dtrader;
 
 import java.util.HashMap;
 import java.util.List;
@@ -7,8 +7,8 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class DayTrader {
-  private static Log log = LogFactory.getFactory().getInstance(DayTrader.class);
+public class DTrader {
+  private static Log log = LogFactory.getFactory().getInstance(DTrader.class);
   public static void main(String[] args) {
     try {
       Tokenizer tokenizer = new Tokenizer("samples/samp2.dt");

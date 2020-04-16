@@ -1,4 +1,4 @@
-package daytrader;
+package dtrader;
 
 import java.io.IOException;
 import java.io.InputStream;
