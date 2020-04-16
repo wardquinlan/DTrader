@@ -161,14 +161,13 @@ public class Parser {
       if (tk.getType() != Token.LPAREN) {
         throw new Exception("invalid function call: " + funcName);
       }
-      Object val = expression(itr);
-      System.out.println("***" + val);
-      if (!itr.hasNext()) {
-        throw new Exception("invalid function call: " + funcName);
-      }
-      tk = itr.next();
-      if (tk.getType() != Token.RPAREN) {
-        throw new Exception("invalid function call: " + funcName);
+      while (itr.hasNext() && itr.peek().getType() != Token.RPAREN) {
+        Object val = expression(itr);
+        System.out.println("***" + val);
+        if (!itr.hasNext()) {
+          throw new Exception("invalid function call: " + funcName);
+        }
+        tk = itr.next();
       }
     }
     throw new Exception("unsupported primary: " + tk);
