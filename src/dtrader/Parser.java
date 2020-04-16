@@ -162,13 +162,21 @@ public class Parser {
         throw new Exception("invalid function call: " + funcName);
       }
       while (itr.hasNext() && itr.peek().getType() != Token.RPAREN) {
+        if (itr.peek().getType() == Token.COMMA) {
+          itr.next();
+        }
         Object val = expression(itr);
         System.out.println("***" + val);
         if (!itr.hasNext()) {
           throw new Exception("invalid function call: " + funcName);
         }
         tk = itr.next();
+        if (tk.getType() != Token.COMMA && tk.getType() != Token.RPAREN) {
+          throw new Exception("invalid function call: " + funcName);
+        }
       }
+      // lookup and call the function here, with its parameter array
+      return new Integer(0);
     }
     throw new Exception("unsupported primary: " + tk);
   }
