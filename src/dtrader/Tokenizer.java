@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class Tokenizer {
   private static Log log = LogFactory.getFactory().getInstance(Tokenizer.class);
+  private static FunctionCaller funcCaller = new FunctionCaller();
   private static final int MAX_LEVEL = 2;
   private File file;
   
@@ -52,7 +53,7 @@ public class Tokenizer {
           }
           if (sb.toString().equals("include")) {
             tk = new Token(Token.INC);
-          } else if (sb.toString().equals("println")) {
+          } else if (funcCaller.isFunction(sb.toString())) {
             tk = new Token(Token.FUNC);
           } else {
             tk = new Token(Token.SYMBOL);

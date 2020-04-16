@@ -10,7 +10,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class Parser {
   private static Log log = LogFactory.getFactory().getInstance(Parser.class);
-  
+  private static FunctionCaller funcCaller = new FunctionCaller();
   private Map<String, Object> symbolTable;
   
   public Parser(Map<String, Object> symbolTable) {
@@ -36,7 +36,6 @@ public class Parser {
       statement.add(tk);
     }
     Object val = expression(new TokenIterator(statement));
-    System.out.println(val);
   }
   
   private Object expression(TokenIterator itr) throws Exception {
@@ -161,9 +160,10 @@ public class Parser {
       if (!itr.hasNext() || itr.peek().getType() == Token.COMMA) {
         throw new Exception("syntax error[3]: " + funcName);
       }
+      List<Object> params = new ArrayList<Object>();
       while (itr.hasNext() && itr.peek().getType() != Token.RPAREN) {
         Object val = expression(itr);
-        System.out.println("***" + val);
+        params.add(val);
         if (!itr.hasNext()) {
           throw new Exception("syntax error[4]: " + funcName);
         }
@@ -175,7 +175,7 @@ public class Parser {
           throw new Exception("syntax error[6]: " + funcName);
         }
       }
-      // lookup and call the function here, with its parameter array
+      funcCaller.invokeFunction(funcName, params);
       return new Integer(0);
     }
     throw new Exception("unsupported primary: " + tk);
