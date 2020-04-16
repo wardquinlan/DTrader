@@ -27,6 +27,8 @@ public class Token {
   public static final int MULT     = 20; // *
   public static final int DIV      = 21; // /
   public static final int EXP      = 22; // **
+  public static final int INC      = 23; // include
+  public static final int FUNC     = 24; // function()
   
   public static Map<Integer, String> map = new HashMap<Integer, String>();
   static {
@@ -53,6 +55,8 @@ public class Token {
     map.put(MULT,    "MULT");
     map.put(DIV,     "DIV");
     map.put(EXP,     "EXP");
+    map.put(INC,     "INC");
+    map.put(FUNC,    "FUNC");
   }
   
   private int type;

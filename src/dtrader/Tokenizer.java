@@ -44,11 +44,18 @@ public class Tokenizer {
             }
           }
         } else if (Character.isLetter(val)) {
-          Token tk = new Token(Token.SYMBOL);
+          Token tk = null;
           StringBuffer sb = new StringBuffer();
           sb.append((char) val);
           while (Character.isLetter(rdr.peek()) || Character.isDigit(rdr.peek()) || rdr.peek() == '_') {
             sb.append((char) rdr.read());
+          }
+          if (sb.toString().equals("include")) {
+            tk = new Token(Token.INC);
+          } else if (sb.toString().equals("println")) {
+            tk = new Token(Token.FUNC);
+          } else {
+            tk = new Token(Token.SYMBOL);
           }
           tk.setValue(sb.toString());
           list.add(tk);
@@ -174,7 +181,7 @@ public class Tokenizer {
     List<Token> listNew = new ArrayList<Token>();
     for (int i = 0; i < list.size(); i++) {
       Token tk = list.get(i);
-      if (tk.getType() == Token.SYMBOL && tk.getValue().equals("include")) {
+      if (tk.getType() == Token.INC) {
         i++;
         if (i == list.size()) {
           throw new Exception("misformatted include statement");
