@@ -48,7 +48,9 @@ public class Parser {
       if (tk.getType() == Token.PLUS) {
         itr.next();
         Object val2 = term(itr);
-        if (val1 instanceof Integer && val2 instanceof Integer) {
+        if (val1 instanceof String) {
+          val1 = val1 + val2.toString();
+        } else if (val1 instanceof Integer && val2 instanceof Integer) {
           val1 = new Integer((Integer) val1 + (Integer) val2);
         } else if (val1 instanceof Integer && val2 instanceof Double) {
           val1 = new Double((Integer) val1 + (Double) val2);
@@ -60,7 +62,9 @@ public class Parser {
       } else if (tk.getType() == Token.MINUS) {
         itr.next();
         Object val2 = term(itr);
-        if (val1 instanceof Integer && val2 instanceof Integer) {
+        if (val1 instanceof String) {
+          throw new Exception("unsupported string operation: " + val1);
+        } else if (val1 instanceof Integer && val2 instanceof Integer) {
           val1 = new Integer((Integer) val1 - (Integer) val2);
         } else if (val1 instanceof Integer && val2 instanceof Double) {
           val1 = new Double((Integer) val1 - (Double) val2);
