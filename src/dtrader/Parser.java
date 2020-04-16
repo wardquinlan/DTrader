@@ -155,27 +155,27 @@ public class Parser {
     if (tk.getType() == Token.FUNC) {
       String funcName = (String) tk.getValue();
       if (!itr.hasNext()) {
-        throw new Exception("invalid function call (missing left parenthesis): " + funcName);
+        throw new Exception("syntax error [1]: " + funcName);
       }
       tk = itr.next();
       if (tk.getType() != Token.LPAREN) {
-        throw new Exception("invalid function call (missing left parenthesis): " + funcName);
+        throw new Exception("syntax error [2]: " + funcName);
       }
       if (!itr.hasNext() || itr.peek().getType() == Token.COMMA) {
-        throw new Exception("invalid function call (invalid syntax): " + funcName);
+        throw new Exception("syntax error[3]: " + funcName);
       }
       while (itr.hasNext() && itr.peek().getType() != Token.RPAREN) {
         Object val = expression(itr);
         System.out.println("***" + val);
         if (!itr.hasNext()) {
-          throw new Exception("invalid function call (missing right parenthesis): " + funcName);
+          throw new Exception("syntax error[4]: " + funcName);
         }
         tk = itr.next();
         if (tk.getType() != Token.COMMA && tk.getType() != Token.RPAREN) {
-          throw new Exception("invalid function call (missing right parenthesis): " + funcName);
+          throw new Exception("syntax error[5]: " + funcName);
         }
         if (tk.getType() == Token.COMMA && (!itr.hasNext() || itr.peek().getType() == Token.RPAREN)) {
-          throw new Exception("invalid function call (invalid syntax): " + funcName);
+          throw new Exception("syntax error[6]: " + funcName);
         }
       }
       // lookup and call the function here, with its parameter array
