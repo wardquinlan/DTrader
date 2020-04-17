@@ -55,7 +55,7 @@ public class Parser {
         break;
       }
       if (itr.peek().getType() == Token.PLUS) {
-        tk = itr.next();
+        itr.next();
         if (!itr.hasNext()) {
           log.error("missing RHS on PLUS");
           throw new Exception("syntax error");
@@ -74,7 +74,7 @@ public class Parser {
           val1 = new Double((Double) val1 + (Double) val2);
         }
       } else if (itr.peek().getType() == Token.MINUS) {
-        tk = itr.next();
+        itr.next();
         if (!itr.hasNext()) {
           log.error("missing RHS on MINUS");
           throw new Exception("syntax error");
@@ -106,7 +106,7 @@ public class Parser {
         break;
       }
       if (itr.peek().getType() == Token.MULT) {
-        tk = itr.next();
+        itr.next();
         if (!itr.hasNext()) {
           log.error("missing RHS on MULT");
           throw new Exception("syntax error");
@@ -124,7 +124,7 @@ public class Parser {
         }
       }
       else if (itr.peek().getType() == Token.DIV) {
-        tk = itr.next();
+        itr.next();
         if (!itr.hasNext()) {
           log.error("missing RHS on DIV");
           throw new Exception("syntax error");
