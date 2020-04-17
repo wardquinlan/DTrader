@@ -80,6 +80,6 @@ public class Token {
   
   @Override
   public String toString() {
-    return "Token[" + map.get(type) + "]" + (value == null ? "" : "=" + value);
+    return map.get(type) + (value == null ? "" : "=" + value);
   }
 }

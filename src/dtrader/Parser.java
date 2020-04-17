@@ -41,8 +41,7 @@ public class Parser {
       return;
     }
     Token tk = itr2.next();
-    primary(tk, itr2);
-    //expression(tk, itr2);
+    expression(tk, itr2);
     if (itr2.hasNext()) {
       log.error("unexpected symbol at end of statement");
       throw new Exception("syntax error");
@@ -55,9 +54,8 @@ public class Parser {
       if (!itr.hasNext()) {
         break;
       }
-      tk = itr.peek();
-      if (tk.getType() == Token.PLUS) {
-        itr.next();
+      if (itr.peek().getType() == Token.PLUS) {
+        tk = itr.next();
         Object val2 = term(tk, itr);
         if (val1 instanceof String) {
           val1 = val1 + val2.toString();
@@ -70,8 +68,8 @@ public class Parser {
         } else {
           val1 = new Double((Double) val1 + (Double) val2);
         }
-      } else if (tk.getType() == Token.MINUS) {
-        itr.next();
+      } else if (itr.peek().getType() == Token.MINUS) {
+        tk = itr.next();
         Object val2 = term(tk, itr);
         if (val1 instanceof String) {
           throw new Exception("unsupported string operation: " + val1);
@@ -97,8 +95,7 @@ public class Parser {
       if (!itr.hasNext()) {
         break;
       }
-      tk = itr.peek();
-      if (tk.getType() == Token.MULT) {
+      if (itr.peek().getType() == Token.MULT) {
         tk = itr.next();
         Object val2 = primary(tk, itr);
         if (val1 instanceof Integer && val2 instanceof Integer) {
@@ -111,8 +108,8 @@ public class Parser {
           val1 = new Double((Double) val1 * (Double) val2);
         }
       }
-      else if (tk.getType() == Token.DIV) {
-        itr.next();
+      else if (itr.peek().getType() == Token.DIV) {
+        tk = itr.next();
         Object val2 = primary(tk, itr);
         if (val1 instanceof Integer && val2 instanceof Integer) {
           if ((Integer) val2 == 0) {
@@ -152,10 +149,9 @@ public class Parser {
     }
     if (tk.getType() == Token.SYMBOL) {
       if (itr.hasNext() && itr.peek().getType() == Token.ASSIGN) {
-        itr.next();
+        tk = itr.next();
         Object val = expression(tk, itr);
         symbolTable.put((String) tk.getValue(), val);
-        return val;
       }
       Object val = symbolTable.get(tk.getValue());
       if (val == null) {
@@ -198,6 +194,6 @@ public class Parser {
       }
       return funcCaller.invokeFunction(funcName, params);
     }
-    throw new Exception("unsupported primary: " + tk);
+    throw new Exception("unsupported primary expression: " + tk);
   }
 }
