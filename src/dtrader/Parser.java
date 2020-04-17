@@ -36,23 +36,29 @@ public class Parser {
       statement.add(tk);
     }
     TokenIterator itr2 = new TokenIterator(statement);
-    expression(itr2);
+    if (!itr2.hasNext()) {
+      // empty statement
+      return;
+    }
+    Token tk = itr2.next();
+    primary(tk, itr2);
+    //expression(tk, itr2);
     if (itr2.hasNext()) {
       log.error("unexpected symbol at end of statement");
       throw new Exception("syntax error");
     }
   }
   
-  private Object expression(TokenIterator itr) throws Exception {
-    Object val1 = term(itr);
+  private Object expression(Token tk, TokenIterator itr) throws Exception {
+    Object val1 = term(tk, itr);
     while (true) {
       if (!itr.hasNext()) {
         break;
       }
-      Token tk = itr.peek();
+      tk = itr.peek();
       if (tk.getType() == Token.PLUS) {
         itr.next();
-        Object val2 = term(itr);
+        Object val2 = term(tk, itr);
         if (val1 instanceof String) {
           val1 = val1 + val2.toString();
         } else if (val1 instanceof Integer && val2 instanceof Integer) {
@@ -66,7 +72,7 @@ public class Parser {
         }
       } else if (tk.getType() == Token.MINUS) {
         itr.next();
-        Object val2 = term(itr);
+        Object val2 = term(tk, itr);
         if (val1 instanceof String) {
           throw new Exception("unsupported string operation: " + val1);
         } else if (val1 instanceof Integer && val2 instanceof Integer) {
@@ -85,16 +91,16 @@ public class Parser {
     return val1;
   }
   
-  private Object term(TokenIterator itr) throws Exception {
-    Object val1 = primary(itr);
+  private Object term(Token tk, TokenIterator itr) throws Exception {
+    Object val1 = primary(tk, itr);
     while (true) {
       if (!itr.hasNext()) {
         break;
       }
-      Token tk = itr.peek();
+      tk = itr.peek();
       if (tk.getType() == Token.MULT) {
-        itr.next();
-        Object val2 = primary(itr);
+        tk = itr.next();
+        Object val2 = primary(tk, itr);
         if (val1 instanceof Integer && val2 instanceof Integer) {
           val1 = new Integer((Integer) val1 * (Integer) val2);
         } else if (val1 instanceof Integer && val2 instanceof Double) {
@@ -107,7 +113,7 @@ public class Parser {
       }
       else if (tk.getType() == Token.DIV) {
         itr.next();
-        Object val2 = primary(itr);
+        Object val2 = primary(tk, itr);
         if (val1 instanceof Integer && val2 instanceof Integer) {
           if ((Integer) val2 == 0) {
             throw new Exception("divide by 0 error");
@@ -140,18 +146,14 @@ public class Parser {
     return val1;
   }
   
-  private Object primary(TokenIterator itr) throws Exception {
-    if (!itr.hasNext()) {
-      throw new Exception("unexpected end of statement");
-    }
-    Token tk = itr.next();
+  private Object primary(Token tk, TokenIterator itr) throws Exception {
     if (tk.getType() == Token.INTEGER || tk.getType() == Token.REAL || tk.getType() == Token.STRING) {
       return tk.getValue();
     }
     if (tk.getType() == Token.SYMBOL) {
       if (itr.hasNext() && itr.peek().getType() == Token.ASSIGN) {
         itr.next();
-        Object val = expression(itr);
+        Object val = expression(tk, itr);
         symbolTable.put((String) tk.getValue(), val);
         return val;
       }
@@ -172,27 +174,23 @@ public class Parser {
         log.error("expecting left parenthesis: " + funcName);
         throw new Exception("syntax error: " + funcName);
       }
-      if (!itr.hasNext() || itr.peek().getType() == Token.COMMA) {
-        log.error("unexpected comma or end of input: " + funcName);
-        throw new Exception("syntax error: " + funcName);
-      }
+      tk = itr.next();
       List<Object> params = new ArrayList<Object>();
-      if (itr.hasNext() && itr.peek().getType() == Token.RPAREN) {
-        itr.next();
-      } else {
-        while (itr.hasNext() && itr.peek().getType() != Token.RPAREN) {
-          Object val = expression(itr);
-          params.add(val);
+      while (tk.getType() != Token.RPAREN) {
+        Object val = expression(tk, itr);
+        params.add(val);
+        if (!itr.hasNext()) {
+          log.error("unexpected end of input: " + funcName);
+          throw new Exception("syntax error: " + funcName);
+        }
+        tk = itr.next();
+        if (tk.getType() == Token.COMMA) {
           if (!itr.hasNext()) {
             log.error("unexpected end of input: " + funcName);
             throw new Exception("syntax error: " + funcName);
           }
           tk = itr.next();
-          if (tk.getType() != Token.COMMA && tk.getType() != Token.RPAREN) {
-            log.error("expecting comma or right parenthesis: " + funcName);
-            throw new Exception("syntax error: " + funcName);
-          }
-          if (tk.getType() == Token.COMMA && (!itr.hasNext() || itr.peek().getType() == Token.RPAREN)) {
+          if (tk.getType() == Token.RPAREN) {
             log.error("unexpected comma: " + funcName);
             throw new Exception("syntax error: " + funcName);
           }
