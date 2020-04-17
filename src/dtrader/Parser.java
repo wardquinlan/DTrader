@@ -168,12 +168,18 @@ public class Parser {
       return tk.getValue();
     }
     if (tk.getType() == Token.SYMBOL) {
+      String symbolName = (String) tk.getValue();
       if (itr.hasNext() && itr.peek().getType() == Token.ASSIGN) {
+        itr.next();
+        if (!itr.hasNext()) {
+          log.error("missing RHS on ASSIGN");
+          throw new Exception("syntax error");
+        }
         tk = itr.next();
         Object val = expression(tk, itr);
-        symbolTable.put((String) tk.getValue(), val);
+        symbolTable.put((String) symbolName, val);
       }
-      Object val = symbolTable.get(tk.getValue());
+      Object val = symbolTable.get(symbolName);
       if (val == null) {
         throw new Exception("uninitialized symbol: " + tk.getValue());
       }
