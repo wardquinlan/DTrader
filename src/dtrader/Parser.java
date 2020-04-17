@@ -36,7 +36,11 @@ public class Parser {
       }
       statement.add(tk);
     }
-    Object val = expression(new TokenIterator(statement));
+    TokenIterator itr2 = new TokenIterator(statement);
+    expression(itr2);
+    if (itr2.hasNext()) {
+      throw new Exception("unexpected end of statement");
+    }
   }
   
   private Object expression(TokenIterator itr) throws Exception {
@@ -190,8 +194,11 @@ public class Parser {
           throw new Exception("syntax error: " + funcName);
         }
       }
-      funcCaller.invokeFunction(funcName, params);
-      return new Integer(0);
+      // consume the right parenthesis
+      if (itr.hasNext() && itr.peek().getType() == Token.RPAREN) {
+        itr.next();
+      }
+      return funcCaller.invokeFunction(funcName, params);
     }
     throw new Exception("unsupported primary: " + tk);
   }
