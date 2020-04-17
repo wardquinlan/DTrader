@@ -155,28 +155,34 @@ public class Parser {
     if (tk.getType() == Token.FUNC) {
       String funcName = (String) tk.getValue();
       if (!itr.hasNext()) {
-        throw new Exception("syntax error [1]: " + funcName);
+        log.error("unexpected end of input: " + funcName);
+        throw new Exception("syntax error: " + funcName);
       }
       tk = itr.next();
       if (tk.getType() != Token.LPAREN) {
-        throw new Exception("syntax error [2]: " + funcName);
+        log.error("expecting left parenthesis: " + funcName);
+        throw new Exception("syntax error: " + funcName);
       }
       if (!itr.hasNext() || itr.peek().getType() == Token.COMMA) {
-        throw new Exception("syntax error[3]: " + funcName);
+        log.error("unexpected comma or end of input: " + funcName);
+        throw new Exception("syntax error: " + funcName);
       }
       List<Object> params = new ArrayList<Object>();
       while (itr.hasNext() && itr.peek().getType() != Token.RPAREN) {
         Object val = expression(itr);
         params.add(val);
         if (!itr.hasNext()) {
-          throw new Exception("syntax error[4]: " + funcName);
+          log.error("unexpected end of input: " + funcName);
+          throw new Exception("syntax error: " + funcName);
         }
         tk = itr.next();
         if (tk.getType() != Token.COMMA && tk.getType() != Token.RPAREN) {
-          throw new Exception("syntax error[5]: " + funcName);
+          log.error("expecting comma or right parenthesis: " + funcName);
+          throw new Exception("syntax error: " + funcName);
         }
         if (tk.getType() == Token.COMMA && (!itr.hasNext() || itr.peek().getType() == Token.RPAREN)) {
-          throw new Exception("syntax error[6]: " + funcName);
+          log.error("unexpected comma: " + funcName);
+          throw new Exception("syntax error: " + funcName);
         }
       }
       funcCaller.invokeFunction(funcName, params);
