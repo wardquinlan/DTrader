@@ -39,7 +39,8 @@ public class Parser {
     TokenIterator itr2 = new TokenIterator(statement);
     expression(itr2);
     if (itr2.hasNext()) {
-      throw new Exception("unexpected end of statement");
+      log.error("unexpected symbol at end of statement");
+      throw new Exception("syntax error");
     }
   }
   

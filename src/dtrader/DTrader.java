@@ -19,6 +19,7 @@ public class DTrader {
       int n = 5;
     } catch(Exception e) {
       log.error(e);
+      System.err.println(e.getMessage());
     }
   }
 }
