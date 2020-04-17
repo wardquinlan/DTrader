@@ -178,26 +178,26 @@ public class Parser {
         throw new Exception("syntax error: " + funcName);
       }
       List<Object> params = new ArrayList<Object>();
-      while (itr.hasNext() && itr.peek().getType() != Token.RPAREN) {
-        Object val = expression(itr);
-        params.add(val);
-        if (!itr.hasNext()) {
-          log.error("unexpected end of input: " + funcName);
-          throw new Exception("syntax error: " + funcName);
-        }
-        tk = itr.next();
-        if (tk.getType() != Token.COMMA && tk.getType() != Token.RPAREN) {
-          log.error("expecting comma or right parenthesis: " + funcName);
-          throw new Exception("syntax error: " + funcName);
-        }
-        if (tk.getType() == Token.COMMA && (!itr.hasNext() || itr.peek().getType() == Token.RPAREN)) {
-          log.error("unexpected comma: " + funcName);
-          throw new Exception("syntax error: " + funcName);
-        }
-      }
-      // consume the right parenthesis
       if (itr.hasNext() && itr.peek().getType() == Token.RPAREN) {
         itr.next();
+      } else {
+        while (itr.hasNext() && itr.peek().getType() != Token.RPAREN) {
+          Object val = expression(itr);
+          params.add(val);
+          if (!itr.hasNext()) {
+            log.error("unexpected end of input: " + funcName);
+            throw new Exception("syntax error: " + funcName);
+          }
+          tk = itr.next();
+          if (tk.getType() != Token.COMMA && tk.getType() != Token.RPAREN) {
+            log.error("expecting comma or right parenthesis: " + funcName);
+            throw new Exception("syntax error: " + funcName);
+          }
+          if (tk.getType() == Token.COMMA && (!itr.hasNext() || itr.peek().getType() == Token.RPAREN)) {
+            log.error("unexpected comma: " + funcName);
+            throw new Exception("syntax error: " + funcName);
+          }
+        }
       }
       return funcCaller.invokeFunction(funcName, params);
     }
