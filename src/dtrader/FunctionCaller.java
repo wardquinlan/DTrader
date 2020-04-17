@@ -26,9 +26,10 @@ public class FunctionCaller {
     }
     if (params.size() == 0) {
       System.out.println();
+      return 0;
     } else {
       System.out.println(params.get(0).toString());
+      return params.get(0).toString();
     }
-    return 0;
   }
 }

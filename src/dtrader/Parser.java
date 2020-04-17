@@ -27,7 +27,6 @@ public class Parser {
     List<Token> statement = new ArrayList<Token>();
     while (true) {
       if (!itr.hasNext()) {
-        log.error("unexpected end of file");
         throw new Exception("unexpected end of file");
       }
       Token tk = itr.next();
