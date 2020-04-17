@@ -56,6 +56,11 @@ public class Parser {
       }
       if (itr.peek().getType() == Token.PLUS) {
         tk = itr.next();
+        if (!itr.hasNext()) {
+          log.error("missing RHS on PLUS");
+          throw new Exception("syntax error");
+        }
+        tk = itr.next();
         Object val2 = term(tk, itr);
         if (val1 instanceof String) {
           val1 = val1 + val2.toString();
@@ -69,6 +74,11 @@ public class Parser {
           val1 = new Double((Double) val1 + (Double) val2);
         }
       } else if (itr.peek().getType() == Token.MINUS) {
+        tk = itr.next();
+        if (!itr.hasNext()) {
+          log.error("missing RHS on MINUS");
+          throw new Exception("syntax error");
+        }
         tk = itr.next();
         Object val2 = term(tk, itr);
         if (val1 instanceof String) {
@@ -97,6 +107,11 @@ public class Parser {
       }
       if (itr.peek().getType() == Token.MULT) {
         tk = itr.next();
+        if (!itr.hasNext()) {
+          log.error("missing RHS on MULT");
+          throw new Exception("syntax error");
+        }
+        tk = itr.next();
         Object val2 = primary(tk, itr);
         if (val1 instanceof Integer && val2 instanceof Integer) {
           val1 = new Integer((Integer) val1 * (Integer) val2);
@@ -109,6 +124,11 @@ public class Parser {
         }
       }
       else if (itr.peek().getType() == Token.DIV) {
+        tk = itr.next();
+        if (!itr.hasNext()) {
+          log.error("missing RHS on DIV");
+          throw new Exception("syntax error");
+        }
         tk = itr.next();
         Object val2 = primary(tk, itr);
         if (val1 instanceof Integer && val2 instanceof Integer) {
