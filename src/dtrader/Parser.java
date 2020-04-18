@@ -185,6 +185,16 @@ public class Parser {
       }
       return val;
     }
+    if (tk.getType() == Token.LPAREN) {
+      tk = itr.next();
+      Object val = expression(tk, itr);
+      if (!itr.hasNext()) {
+        log.error("missing RPAREN");
+        throw new Exception("syntax error: unmatched lparen");
+      }
+      itr.next();
+      return val;
+    }
     if (tk.getType() == Token.FUNC) {
       String funcName = (String) tk.getValue();
       if (!itr.hasNext()) {
