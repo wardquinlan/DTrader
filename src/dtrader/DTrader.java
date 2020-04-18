@@ -107,10 +107,13 @@ public class DTrader {
 
     try {
       Tokenizer tokenizer = new Tokenizer("samples/test1.dt");
-      List<Token> tokens = tokenizer.tokenize();
-      Map<String, Object> symbolTable = new HashMap<String, Object>();
-      Parser parser = new Parser(symbolTable);
-      parser.parse(tokens.iterator());
+      TokenIterator itr = tokenizer.tokenize();
+      if (itr.hasNext()) {
+        Map<String, Object> symbolTable = new HashMap<String, Object>();
+        Parser parser = new Parser(symbolTable);
+        Token tk = itr.next();
+        parser.parse(tk, itr);
+      }
       int n = 5;
     } catch(Exception e) {
       log.error(e);

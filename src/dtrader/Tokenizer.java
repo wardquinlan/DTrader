@@ -12,18 +12,18 @@ import org.apache.commons.logging.LogFactory;
 public class Tokenizer {
   private static Log log = LogFactory.getFactory().getInstance(Tokenizer.class);
   private static FunctionCaller funcCaller = new FunctionCaller();
-  private static final int MAX_LEVEL = 2;
+  private static final int MAX_LEVEL = 8;
   private File file;
   
   public Tokenizer(String path) {
     file = new File(path);
   }
   
-  public List<Token> tokenize() throws Exception {
+  public TokenIterator tokenize() throws Exception {
     return tokenize(0);
   }
   
-  public List<Token> tokenize(int level) throws Exception {
+  public TokenIterator tokenize(int level) throws Exception {
     if (level > MAX_LEVEL) {
       throw new Exception("exceeded maximum include level");
     }
@@ -178,7 +178,7 @@ public class Tokenizer {
     return postTokenize(list, level);
   }
   
-  private List<Token> postTokenize(List<Token> list, int level) throws Exception {
+  private TokenIterator postTokenize(List<Token> list, int level) throws Exception {
     List<Token> listNew = new ArrayList<Token>();
     for (int i = 0; i < list.size(); i++) {
       Token tk = list.get(i);
@@ -201,11 +201,14 @@ public class Tokenizer {
           throw new Exception("misformatted include statement");
         }
         Tokenizer tokenizer = new Tokenizer(file.getParent() + "/" + path);
-        listNew.addAll(tokenizer.tokenize(level + 1));
+        TokenIterator itr = tokenizer.tokenize(level + 1);
+        while (itr.hasNext()) {
+          listNew.add(itr.next());
+        }
       } else {
         listNew.add(tk);
       }
     }
-    return listNew;
+    return new TokenIterator(listNew);
   }
 }

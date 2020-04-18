@@ -17,35 +17,71 @@ public class Parser {
     this.symbolTable = symbolTable;
   }
   
-  public void parse(Iterator<Token> itr) throws Exception {
-    while (itr.hasNext()) {
-      parseStatement(itr);
+  public void parse(Token tk, TokenIterator itr) throws Exception {
+    while (true) {
+      if (tk.getType() == Token.CONST) {
+        List<Token> list = new ArrayList<Token>();
+        list.add(tk);
+        while (itr.hasNext() && itr.peek().getType() != Token.SEMI) {
+          list.add(itr.next());
+        }
+        if (!itr.hasNext()) {
+          log.error("missing semi colon");
+          throw new Exception("syntax error");
+        }
+        TokenIterator itr2 = new TokenIterator(list);
+        Token tk2 = itr2.next();
+        parseDeclaration(tk2, itr2);
+      } else {
+        List<Token> list = new ArrayList<Token>();
+        list.add(tk);
+        while (itr.hasNext() && itr.peek().getType() != Token.SEMI) {
+          list.add(itr.next());
+        }
+        if (!itr.hasNext()) {
+          log.error("missing semi colon");
+          throw new Exception("syntax error");
+        }
+        TokenIterator itr2 = new TokenIterator(list);
+        Token tk2 = itr2.next();
+        expression(tk2, itr2);
+      }
+      if (!itr.hasNext()) {
+        break;
+      }
+      tk = itr.next();
     }
   }
   
-  public void parseStatement(Iterator<Token> itr) throws Exception {
-    List<Token> statement = new ArrayList<Token>();
-    while (true) {
-      if (!itr.hasNext()) {
-        throw new Exception("unexpected end of file");
-      }
-      Token tk = itr.next();
-      if (tk.getType() == Token.SEMI) {
-        break;
-      }
-      statement.add(tk);
-    }
-    TokenIterator itr2 = new TokenIterator(statement);
-    if (!itr2.hasNext()) {
-      // empty statement
-      return;
-    }
-    Token tk = itr2.next();
-    expression(tk, itr2);
-    if (itr2.hasNext()) {
-      log.error("unexpected symbol at end of statement");
+  private void parseDeclaration(Token tk, TokenIterator itr) throws Exception {
+    // skip const
+    tk = itr.next();
+    if (!itr.hasNext()) {
+      log.error("invalid const declaration");
       throw new Exception("syntax error");
     }
+    tk = itr.next();
+    if (tk.getType() != Token.SYMBOL) {
+      log.error("invalid const declaration");
+      throw new Exception("syntax error");
+    }
+    String symbolName = (String) tk.getValue();
+    if (!itr.hasNext()) {
+      log.error("invalid const declaration");
+      throw new Exception("syntax error");
+    }
+    tk = itr.next();
+    if (tk.getType() != Token.ASSIGN) {
+      log.error("invalid const declaration");
+      throw new Exception("syntax error");
+    }
+    if (!itr.hasNext()) {
+      log.error("invalid const declaration");
+      throw new Exception("syntax error");
+    }
+    tk = itr.next();
+    Object val = expression(tk, itr);
+    symbolTable.put((String) symbolName, val);
   }
   
   private Object expression(Token tk, TokenIterator itr) throws Exception {
