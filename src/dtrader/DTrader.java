@@ -32,7 +32,7 @@ public class DTrader {
   }
 
   private Integer chart(List<String> argList) {
-    String chart = null;
+    String chartName = null;
     if (argList.size() == 0) {
       log.error("no arguments");
       return usage();
@@ -43,7 +43,7 @@ public class DTrader {
         log.error("missing --chart-name argument");
         return usage();
       }
-      chart = argList.remove(0);
+      chartName = argList.remove(0);
       if (argList.size() == 0) {
         log.error("missing file");
         return usage();
@@ -54,8 +54,7 @@ public class DTrader {
       log.error("too many arguments");
       return usage();
     }
-    String file = param;
-    System.out.println(chart + "," + param);
+    String fileName = param;
     return 0;
   }
   
