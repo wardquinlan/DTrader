@@ -26,7 +26,7 @@ public class Token {
   public static final int MINUS    = 19; // - 
   public static final int MULT     = 20; // *
   public static final int DIV      = 21; // /
-  public static final int EXP      = 22; // **
+  public static final int EXP      = 22; // ^
   public static final int INC      = 23; // include
   public static final int FUNC     = 24; // function()
   

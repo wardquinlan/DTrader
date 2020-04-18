@@ -122,7 +122,7 @@ public class Tokenizer {
         } else if (val == '>' && rdr.peek() == '=') {
           Token tk = new Token(Token.GTE);
           list.add(tk);
-        } else if (val == '*' && rdr.peek() == '*') {
+        } else if (val == '^') {
           Token tk = new Token(Token.EXP);
           list.add(tk);
         } else if (val == '(') {

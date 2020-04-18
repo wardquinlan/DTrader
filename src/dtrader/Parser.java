@@ -131,8 +131,26 @@ public class Parser {
           log.error("invalid MULT operation");
           throw new Exception("syntax error");
         }
-      }
-      else if (itr.peek().getType() == Token.DIV) {
+      } else if (itr.peek().getType() == Token.EXP) {
+        itr.next();
+        if (!itr.hasNext()) {
+          log.error("missing RHS on EXP");
+          throw new Exception("syntax error");
+        }
+        tk = itr.next();
+        Object val2 = primary(tk, itr);
+        if (val1 instanceof Integer) {
+          val1 = ((Integer) val1).doubleValue();
+        }
+        if (val2 instanceof Integer) {
+          val2 = ((Integer) val2).doubleValue();
+        }
+        if (!(val1 instanceof Double) || !(val2 instanceof Double)) {
+          log.error("exponentials must be double");
+          throw new Exception("syntax error");
+        }
+        val1 = Math.pow((Double) val1, (Double) val2);
+      } else if (itr.peek().getType() == Token.DIV) {
         itr.next();
         if (!itr.hasNext()) {
           log.error("missing RHS on DIV");
