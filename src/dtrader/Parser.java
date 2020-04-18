@@ -179,6 +179,27 @@ public class Parser {
     if (tk.getType() == Token.INTEGER || tk.getType() == Token.REAL || tk.getType() == Token.STRING) {
       return tk.getValue();
     }
+    if (tk.getType() == Token.PLUS) {
+      tk = itr.next();
+      Object val = primary(tk, itr);
+      if (!(val instanceof Integer) && !(val instanceof Double)) {
+        log.error("invalid unary plus");
+        throw new Exception("syntax error");
+      }
+      return val;
+    }
+    if (tk.getType() == Token.MINUS) {
+      tk = itr.next();
+      Object val = primary(tk, itr);
+      if (val instanceof Integer) {
+        return new Integer(-(Integer) val);
+      } else if (val instanceof Double) {
+        return new Double(-(Double) val);
+      } else {
+        log.error("invalid unary minus");
+        throw new Exception("syntax error");
+      }
+    }
     if (tk.getType() == Token.SYMBOL) {
       String symbolName = (String) tk.getValue();
       if (itr.hasNext() && itr.peek().getType() == Token.ASSIGN) {
