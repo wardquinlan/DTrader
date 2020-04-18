@@ -70,8 +70,11 @@ public class Parser {
           val1 = new Double((Integer) val1 + (Double) val2);
         } else if (val1 instanceof Double && val2 instanceof Integer) {
           val1 = new Double((Double) val1 + (Integer) val2);
-        } else {
+        } else if (val1 instanceof Double && val2 instanceof Double) {
           val1 = new Double((Double) val1 + (Double) val2);
+        } else {
+          log.error("invalid PLUS operation");
+          throw new Exception("syntax error");
         }
       } else if (itr.peek().getType() == Token.MINUS) {
         itr.next();
@@ -89,8 +92,11 @@ public class Parser {
           val1 = new Double((Integer) val1 - (Double) val2);
         } else if (val1 instanceof Double && val2 instanceof Integer) {
           val1 = new Double((Double) val1 - (Integer) val2);
-        } else {
+        } else if (val1 instanceof Double && val2 instanceof Double) {
           val1 = new Double((Double) val1 - (Double) val2);
+        } else {
+          log.error("invalid MINUS operation");
+          throw new Exception("syntax error");
         }
       } else {
         break;
@@ -119,8 +125,11 @@ public class Parser {
           val1 = new Double((Integer) val1 * (Double) val2);
         } else if (val1 instanceof Double && val2 instanceof Integer) {
           val1 = new Double((Double) val1 * (Integer) val2);
-        } else {
+        } else if (val1 instanceof Double && val2 instanceof Double) {
           val1 = new Double((Double) val1 * (Double) val2);
+        } else {
+          log.error("invalid MULT operation");
+          throw new Exception("syntax error");
         }
       }
       else if (itr.peek().getType() == Token.DIV) {
@@ -150,11 +159,14 @@ public class Parser {
             throw new Exception("divide by 0 error");
           }
           val1 = new Double((Double) val1 / (Integer) val2);
-        } else {
+        } else if (val1 instanceof Double && val2 instanceof Double) {
           val1 = new Double((Double) val1 / (Double) val2);
           if ((Double) val2 == 0d) {
             throw new Exception("divide by 0 error");
           }
+        } else {
+          log.error("invalid DIV operation");
+          throw new Exception("syntax error");
         }
       } else {
         break;
