@@ -1,5 +1,6 @@
 package dtrader;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.IOException;
@@ -64,6 +65,7 @@ public class DTrader {
         JFrame frame = new JFrame("DTrader");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel panel = new ChartPanel();
+        panel.setBackground(Color.ORANGE);
         frame.getContentPane().add(panel);
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setSize(size);
