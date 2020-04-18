@@ -1,2 +1,9 @@
-N = 3 + 5 * 2;
-2 * N;
+println("-------------------------------");
+price = 100;
+eps = 5.0;
+pe = price / eps;
+eyield = eps / price;
+--println("pe=" + pe);
+--println("eyield=" + eyield * 100 + "%");
+println(println("hello") + println(3));
+

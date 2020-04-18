@@ -11,7 +11,7 @@ public class DTrader {
   private static Log log = LogFactory.getFactory().getInstance(DTrader.class);
   public static void main(String[] args) {
     try {
-      Tokenizer tokenizer = new Tokenizer("samples/samp2.dt");
+      Tokenizer tokenizer = new Tokenizer("samples/test1.dt");
       List<Token> tokens = tokenizer.tokenize();
       Map<String, Object> symbolTable = new HashMap<String, Object>();
       Parser parser = new Parser(symbolTable);
