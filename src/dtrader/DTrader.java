@@ -103,9 +103,8 @@ public class DTrader {
     for (int i = 0; i < args.length; i++) {
       argList.add(args[i]);
     }
-    new DTrader(argList);
+    //new DTrader(argList);
 
-    /*
     try {
       Tokenizer tokenizer = new Tokenizer("samples/test1.dt");
       List<Token> tokens = tokenizer.tokenize();
@@ -117,6 +116,5 @@ public class DTrader {
       log.error(e);
       System.err.println(e.getMessage());
     }
-    */
   }
 }
