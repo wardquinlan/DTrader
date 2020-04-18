@@ -1,2 +1,10 @@
 println();
-
+println("hello");
+println(3);
+println(3.0);
+println(3 + 2);
+--println(, 3 + 2);
+--println(3+2,);
+--println(3+2));
+--println(println("hello") + " world");
+--println(3, 2);
