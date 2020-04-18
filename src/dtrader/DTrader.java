@@ -1,5 +1,7 @@
 package dtrader;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -8,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -59,16 +61,12 @@ public class DTrader {
     String fileName = param;
     javax.swing.SwingUtilities.invokeLater(new Runnable() {
       public void run() {
-      //Create and set up the window.
-        JFrame frame = new JFrame("HelloWorldSwing");
+        JFrame frame = new JFrame("DTrader");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
- 
-        //Add the ubiquitous "Hello World" label.
-        JLabel label = new JLabel("Hello World");
-        frame.getContentPane().add(label);
- 
-        //Display the window.
-        frame.pack();
+        JPanel panel = new ChartPanel();
+        frame.getContentPane().add(panel);
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setSize(size);
         frame.setVisible(true);          
       }
     });    
