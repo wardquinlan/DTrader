@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -16,55 +19,68 @@ public class DTrader {
   
   public DTrader(List<String> args) {
     loadProperties();
-    Integer ret = dispatch(args);
-    System.exit(ret);
+    dispatch(args);
   }
 
-  private Integer dispatch(List<String> argList) {
+  private void dispatch(List<String> argList) {
     if (argList.size() == 0) {
-      return usage();
+      usage();
     } else if ("chart".equals((String) argList.get(0))) {
       argList.remove(0);
-      return chart(argList);
+      chart(argList);
     } else {
-      return usage();
+      usage();
     }
   }
 
-  private Integer chart(List<String> argList) {
+  private void chart(List<String> argList) {
     String chartName = null;
     if (argList.size() == 0) {
       log.error("no arguments");
-      return usage();
+      usage();
     }
     String param = argList.remove(0);
     if ("--chart-name".equals(param)) {
       if (argList.size() == 0) {
         log.error("missing --chart-name argument");
-        return usage();
+        usage();
       }
       chartName = argList.remove(0);
       if (argList.size() == 0) {
         log.error("missing file");
-        return usage();
+        usage();
       }
       param = argList.remove(0);
     }
     if (argList.size() > 0) {
       log.error("too many arguments");
-      return usage();
+      usage();
     }
     String fileName = param;
-    return 0;
+    javax.swing.SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+      //Create and set up the window.
+        JFrame frame = new JFrame("HelloWorldSwing");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+ 
+        //Add the ubiquitous "Hello World" label.
+        JLabel label = new JLabel("Hello World");
+        frame.getContentPane().add(label);
+ 
+        //Display the window.
+        frame.pack();
+        frame.setVisible(true);          
+      }
+    });    
   }
   
-  private Integer usage() {
+  private void usage() {
     System.out.println("dtrader version " + version);
     System.out.println("-------------------------------------------\n");
     System.out.println("usage:\n");
     System.out.println("dtrader chart [--chart-name name] config-file.dt");
     System.out.println("  loads dtrader in gaphical mode and renders 'name' (defaults to first chart found)\n");
-    return 1;
+    System.exit(1);
   }
   
   private void loadProperties() {
