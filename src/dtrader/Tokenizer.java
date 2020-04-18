@@ -78,7 +78,7 @@ public class Tokenizer {
             list.add(tk);
           } else {
             Token tk = new Token(Token.INTEGER);
-            tk.setValue(Integer.parseInt(sb.toString()));
+            tk.setValue(Long.parseLong(sb.toString()));
             list.add(tk);
           }
         } else if (val == '#') {
@@ -87,7 +87,7 @@ public class Tokenizer {
           while (Character.isDigit(rdr.peek()) || (rdr.peek() >= 'a' && rdr.peek() <= 'f') || (rdr.peek() >= 'A' && rdr.peek() <= 'F')) {
             sb.append((char) rdr.read());
           }
-          tk.setValue(Integer.parseInt(sb.toString(), 16));
+          tk.setValue(Long.parseLong(sb.toString(), 16));
           list.add(tk);
         } else if (val == '"') {
           Token tk = new Token(Token.STRING);

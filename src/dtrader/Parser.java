@@ -64,12 +64,12 @@ public class Parser {
         Object val2 = term(tk, itr);
         if (val1 instanceof String) {
           val1 = val1 + val2.toString();
-        } else if (val1 instanceof Integer && val2 instanceof Integer) {
-          val1 = new Integer((Integer) val1 + (Integer) val2);
-        } else if (val1 instanceof Integer && val2 instanceof Double) {
-          val1 = new Double((Integer) val1 + (Double) val2);
-        } else if (val1 instanceof Double && val2 instanceof Integer) {
-          val1 = new Double((Double) val1 + (Integer) val2);
+        } else if (val1 instanceof Long && val2 instanceof Long) {
+          val1 = new Long((Long) val1 + (Long) val2);
+        } else if (val1 instanceof Long && val2 instanceof Double) {
+          val1 = new Double((Long) val1 + (Double) val2);
+        } else if (val1 instanceof Double && val2 instanceof Long) {
+          val1 = new Double((Double) val1 + (Long) val2);
         } else if (val1 instanceof Double && val2 instanceof Double) {
           val1 = new Double((Double) val1 + (Double) val2);
         } else {
@@ -86,12 +86,12 @@ public class Parser {
         Object val2 = term(tk, itr);
         if (val1 instanceof String) {
           throw new Exception("unsupported string operation: " + val1);
-        } else if (val1 instanceof Integer && val2 instanceof Integer) {
-          val1 = new Integer((Integer) val1 - (Integer) val2);
-        } else if (val1 instanceof Integer && val2 instanceof Double) {
-          val1 = new Double((Integer) val1 - (Double) val2);
-        } else if (val1 instanceof Double && val2 instanceof Integer) {
-          val1 = new Double((Double) val1 - (Integer) val2);
+        } else if (val1 instanceof Long && val2 instanceof Long) {
+          val1 = new Long((Long) val1 - (Long) val2);
+        } else if (val1 instanceof Long && val2 instanceof Double) {
+          val1 = new Double((Long) val1 - (Double) val2);
+        } else if (val1 instanceof Double && val2 instanceof Long) {
+          val1 = new Double((Double) val1 - (Long) val2);
         } else if (val1 instanceof Double && val2 instanceof Double) {
           val1 = new Double((Double) val1 - (Double) val2);
         } else {
@@ -119,12 +119,12 @@ public class Parser {
         }
         tk = itr.next();
         Object val2 = primary(tk, itr);
-        if (val1 instanceof Integer && val2 instanceof Integer) {
-          val1 = new Integer((Integer) val1 * (Integer) val2);
-        } else if (val1 instanceof Integer && val2 instanceof Double) {
-          val1 = new Double((Integer) val1 * (Double) val2);
-        } else if (val1 instanceof Double && val2 instanceof Integer) {
-          val1 = new Double((Double) val1 * (Integer) val2);
+        if (val1 instanceof Long && val2 instanceof Long) {
+          val1 = new Long((Long) val1 * (Long) val2);
+        } else if (val1 instanceof Long && val2 instanceof Double) {
+          val1 = new Double((Long) val1 * (Double) val2);
+        } else if (val1 instanceof Double && val2 instanceof Long) {
+          val1 = new Double((Double) val1 * (Long) val2);
         } else if (val1 instanceof Double && val2 instanceof Double) {
           val1 = new Double((Double) val1 * (Double) val2);
         } else {
@@ -139,11 +139,11 @@ public class Parser {
         }
         tk = itr.next();
         Object val2 = primary(tk, itr);
-        if (val1 instanceof Integer) {
-          val1 = ((Integer) val1).doubleValue();
+        if (val1 instanceof Long) {
+          val1 = ((Long) val1).doubleValue();
         }
-        if (val2 instanceof Integer) {
-          val2 = ((Integer) val2).doubleValue();
+        if (val2 instanceof Long) {
+          val2 = ((Long) val2).doubleValue();
         }
         if (!(val1 instanceof Double) || !(val2 instanceof Double)) {
           log.error("exponentials must be double");
@@ -158,25 +158,25 @@ public class Parser {
         }
         tk = itr.next();
         Object val2 = primary(tk, itr);
-        if (val1 instanceof Integer && val2 instanceof Integer) {
-          if ((Integer) val2 == 0) {
+        if (val1 instanceof Long && val2 instanceof Long) {
+          if ((Long) val2 == 0) {
             throw new Exception("divide by 0 error");
           }
-          if ((Integer) val1 % (Integer) val2 == 0) {
-            val1 = new Integer((Integer) val1 / (Integer) val2);
+          if ((Long) val1 % (Long) val2 == 0) {
+            val1 = new Long((Long) val1 / (Long) val2);
           } else {
-            val1 = new Double(((Integer) val1).doubleValue() / ((Integer) val2).doubleValue());
+            val1 = new Double(((Long) val1).doubleValue() / ((Long) val2).doubleValue());
           }
-        } else if (val1 instanceof Integer && val2 instanceof Double) {
+        } else if (val1 instanceof Long && val2 instanceof Double) {
           if ((Double) val2 == 0d) {
             throw new Exception("divide by 0 error");
           }
-          val1 = new Double((Integer) val1 / (Double) val2);
-        } else if (val1 instanceof Double && val2 instanceof Integer) {
-          if ((Integer) val2 == 0) {
+          val1 = new Double((Long) val1 / (Double) val2);
+        } else if (val1 instanceof Double && val2 instanceof Long) {
+          if ((Long) val2 == 0) {
             throw new Exception("divide by 0 error");
           }
-          val1 = new Double((Double) val1 / (Integer) val2);
+          val1 = new Double((Double) val1 / (Long) val2);
         } else if (val1 instanceof Double && val2 instanceof Double) {
           val1 = new Double((Double) val1 / (Double) val2);
           if ((Double) val2 == 0d) {
@@ -200,7 +200,7 @@ public class Parser {
     if (tk.getType() == Token.PLUS) {
       tk = itr.next();
       Object val = primary(tk, itr);
-      if (!(val instanceof Integer) && !(val instanceof Double)) {
+      if (!(val instanceof Long) && !(val instanceof Double)) {
         log.error("invalid unary plus");
         throw new Exception("syntax error");
       }
@@ -209,8 +209,8 @@ public class Parser {
     if (tk.getType() == Token.MINUS) {
       tk = itr.next();
       Object val = primary(tk, itr);
-      if (val instanceof Integer) {
-        return new Integer(-(Integer) val);
+      if (val instanceof Long) {
+        return new Long(-(Long) val);
       } else if (val instanceof Double) {
         return new Double(-(Double) val);
       } else {
