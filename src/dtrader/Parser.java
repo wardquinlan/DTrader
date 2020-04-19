@@ -1,7 +1,6 @@
 package dtrader;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +37,10 @@ public class Parser {
           parseDeclaration(tk2, itr2);
         } else {
           expression(tk2, itr2);
+        }
+        if (itr2.hasNext()) {
+          log.error("unexpected symbol at end of line");
+          throw new Exception("syntax error");
         }
       }
       if (!itr.hasNext()) {
