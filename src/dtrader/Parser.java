@@ -281,10 +281,14 @@ public class Parser {
       tk = itr.next();
       Object val = expression(tk, itr);
       if (!itr.hasNext()) {
-        log.error("missing RPAREN");
+        log.error("missing RPAREN (end of line)");
         throw new Exception("syntax error: unmatched lparen");
       }
-      itr.next();
+      tk = itr.next();
+      if (tk.getType() != Token.RPAREN) {
+        log.error("missing RPAREN (unexpected token)");
+        throw new Exception("syntax error: unmatched lparen");
+      }
       return val;
     }
     if (tk.getType() == Token.FUNC) {
