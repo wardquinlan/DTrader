@@ -48,8 +48,6 @@ public class Parser {
   }
   
   private void parseDeclaration(Token tk, TokenIterator itr) throws Exception {
-    // skip const
-    tk = itr.next();
     if (!itr.hasNext()) {
       log.error("invalid const declaration");
       throw new Exception("syntax error");

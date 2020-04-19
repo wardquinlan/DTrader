@@ -53,6 +53,8 @@ public class Tokenizer {
           }
           if (sb.toString().equals("include")) {
             tk = new Token(Token.INC);
+          } else if (sb.toString().equals("const")) {
+            tk = new Token(Token.CONST);
           } else if (funcCaller.isFunction(sb.toString())) {
             tk = new Token(Token.FUNC);
           } else {
