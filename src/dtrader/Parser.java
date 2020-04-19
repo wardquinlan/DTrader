@@ -136,7 +136,7 @@ public class Parser {
   }
   
   private Object term(Token tk, TokenIterator itr) throws Exception {
-    Object val1 = primary(tk, itr);
+    Object val1 = exp(tk, itr);
     while (true) {
       if (!itr.hasNext()) {
         break;
@@ -148,7 +148,7 @@ public class Parser {
           throw new Exception("syntax error");
         }
         tk = itr.next();
-        Object val2 = primary(tk, itr);
+        Object val2 = exp(tk, itr);
         if (val1 instanceof Long && val2 instanceof Long) {
           val1 = new Long((Long) val1 * (Long) val2);
         } else if (val1 instanceof Long && val2 instanceof Double) {
@@ -161,25 +161,6 @@ public class Parser {
           log.error("invalid MULT operation");
           throw new Exception("syntax error");
         }
-      } else if (itr.peek().getType() == Token.EXP) {
-        itr.next();
-        if (!itr.hasNext()) {
-          log.error("missing RHS on EXP");
-          throw new Exception("syntax error");
-        }
-        tk = itr.next();
-        Object val2 = primary(tk, itr);
-        if (val1 instanceof Long) {
-          val1 = ((Long) val1).doubleValue();
-        }
-        if (val2 instanceof Long) {
-          val2 = ((Long) val2).doubleValue();
-        }
-        if (!(val1 instanceof Double) || !(val2 instanceof Double)) {
-          log.error("exponentials must be double");
-          throw new Exception("syntax error");
-        }
-        val1 = Math.pow((Double) val1, (Double) val2);
       } else if (itr.peek().getType() == Token.DIV) {
         itr.next();
         if (!itr.hasNext()) {
@@ -187,7 +168,7 @@ public class Parser {
           throw new Exception("syntax error");
         }
         tk = itr.next();
-        Object val2 = primary(tk, itr);
+        Object val2 = exp(tk, itr);
         if (val1 instanceof Long && val2 instanceof Long) {
           if ((Long) val2 == 0) {
             throw new Exception("divide by 0 error");
@@ -216,6 +197,38 @@ public class Parser {
           log.error("invalid DIV operation");
           throw new Exception("syntax error");
         }
+      } else {
+        break;
+      }
+    }
+    return val1;
+  }
+
+  private Object exp(Token tk, TokenIterator itr) throws Exception {
+    Object val1 = primary(tk, itr);
+    while (true) {
+      if (!itr.hasNext()) {
+        break;
+      }
+      if (itr.peek().getType() == Token.EXP) {
+        itr.next();
+        if (!itr.hasNext()) {
+          log.error("missing RHS on EXP");
+          throw new Exception("syntax error");
+        }
+        tk = itr.next();
+        Object val2 = primary(tk, itr);
+        if (val1 instanceof Long) {
+          val1 = ((Long) val1).doubleValue();
+        }
+        if (val2 instanceof Long) {
+          val2 = ((Long) val2).doubleValue();
+        }
+        if (!(val1 instanceof Double) || !(val2 instanceof Double)) {
+          log.error("exponentials must be double");
+          throw new Exception("syntax error");
+        }
+        val1 = Math.pow((Double) val1, (Double) val2);
       } else {
         break;
       }
