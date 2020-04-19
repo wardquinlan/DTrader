@@ -1,1 +1,7 @@
-3;
+const P = 3;
+const Q = 5;
+PQ = P * Q;
+println(PQ);
+PQ = 0;
+println(PQ);
+

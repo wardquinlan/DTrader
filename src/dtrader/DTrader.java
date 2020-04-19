@@ -109,7 +109,7 @@ public class DTrader {
       Tokenizer tokenizer = new Tokenizer("samples/test1.dt");
       TokenIterator itr = tokenizer.tokenize();
       if (itr.hasNext()) {
-        Map<String, Object> symbolTable = new HashMap<String, Object>();
+        Map<String, Symbol> symbolTable = new HashMap<String, Symbol>();
         Parser parser = new Parser(symbolTable);
         Token tk = itr.next();
         parser.parse(tk, itr);

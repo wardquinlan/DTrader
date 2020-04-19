@@ -10,9 +10,9 @@ import org.apache.commons.logging.LogFactory;
 public class Parser {
   private static Log log = LogFactory.getFactory().getInstance(Parser.class);
   private static FunctionCaller funcCaller = new FunctionCaller();
-  private Map<String, Object> symbolTable;
+  private Map<String, Symbol> symbolTable;
   
-  public Parser(Map<String, Object> symbolTable) {
+  public Parser(Map<String, Symbol> symbolTable) {
     this.symbolTable = symbolTable;
   }
   
@@ -76,7 +76,10 @@ public class Parser {
     }
     tk = itr.next();
     Object val = expression(tk, itr);
-    symbolTable.put((String) symbolName, val);
+    if (symbolTable.get(symbolName) != null) {
+      throw new Exception("symbol already defined: " + symbolName);
+    }
+    symbolTable.put((String) symbolName, new Symbol(val, true));
   }
   
   private Object expression(Token tk, TokenIterator itr) throws Exception {
@@ -272,13 +275,18 @@ public class Parser {
         }
         tk = itr.next();
         Object val = expression(tk, itr);
-        symbolTable.put((String) symbolName, val);
+        Symbol symbol = symbolTable.get(symbolName);
+        if (symbol != null && symbol.isConstant()) {
+          throw new Exception("cannot write to a const: " + symbolName);
+        }
+        symbolTable.put(symbolName, new Symbol(val));
       }
-      Object val = symbolTable.get(symbolName);
-      if (val == null) {
+       
+      Symbol symbol = symbolTable.get(symbolName);
+      if (symbol == null) {
         throw new Exception("uninitialized symbol: " + tk.getValue());
       }
-      return val;
+      return symbol.getValue();
     }
     if (tk.getType() == Token.LPAREN) {
       tk = itr.next();
