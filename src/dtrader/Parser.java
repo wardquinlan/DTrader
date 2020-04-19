@@ -19,19 +19,8 @@ public class Parser {
   
   public void parse(Token tk, TokenIterator itr) throws Exception {
     while (true) {
-      if (tk.getType() == Token.CONST) {
-        List<Token> list = new ArrayList<Token>();
-        list.add(tk);
-        while (itr.hasNext() && itr.peek().getType() != Token.SEMI) {
-          list.add(itr.next());
-        }
-        if (!itr.hasNext()) {
-          log.error("missing semi colon");
-          throw new Exception("syntax error");
-        }
-        TokenIterator itr2 = new TokenIterator(list);
-        Token tk2 = itr2.next();
-        parseDeclaration(tk2, itr2);
+      if (tk.getType() == Token.CHART) {
+        throw new Exception("unsupported");
       } else {
         List<Token> list = new ArrayList<Token>();
         list.add(tk);
@@ -42,9 +31,14 @@ public class Parser {
           log.error("missing semi colon");
           throw new Exception("syntax error");
         }
+        itr.next();
         TokenIterator itr2 = new TokenIterator(list);
         Token tk2 = itr2.next();
-        expression(tk2, itr2);
+        if (tk.getType() == Token.CONST) {
+          parseDeclaration(tk2, itr2);
+        } else {
+          expression(tk2, itr2);
+        }
       }
       if (!itr.hasNext()) {
         break;

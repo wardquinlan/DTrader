@@ -30,6 +30,7 @@ public class Token {
   public static final int INC      = 23; // include
   public static final int FUNC     = 24; // function()
   public static final int CONST    = 25; // const
+  public static final int CHART    = 26;
   
   public static Map<Integer, String> map = new HashMap<Integer, String>();
   static {
@@ -59,6 +60,7 @@ public class Token {
     map.put(INC,     "INC");
     map.put(FUNC,    "FUNC");
     map.put(CONST,   "CONST");
+    map.put(CHART,   "CHART");
   }
   
   private int type;
