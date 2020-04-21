@@ -106,14 +106,15 @@ public class DTrader {
     for (int i = 0; i < args.length; i++) {
       argList.add(args[i]);
     }
+    
+    new DTrader(argList);
+
     try {
       new SeriesDAO();
     } catch(Exception e) {
       log.error(e);
     }
     
-    new DTrader(argList);
-
     try {
       Tokenizer tokenizer = new Tokenizer("samples/test1.dt");
       TokenIterator itr = tokenizer.tokenize();
