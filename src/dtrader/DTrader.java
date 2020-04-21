@@ -106,6 +106,12 @@ public class DTrader {
     for (int i = 0; i < args.length; i++) {
       argList.add(args[i]);
     }
+    try {
+      new SeriesDAO();
+    } catch(Exception e) {
+      log.error(e);
+    }
+    
     new DTrader(argList);
 
     try {
