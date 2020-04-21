@@ -78,8 +78,8 @@ public class DTrader {
     System.out.println("dtrader version " + version);
     System.out.println("-------------------------------------------\n");
     System.out.println("usage:\n");
-    System.out.println("dtrader import --source quote-template || quote-db || fred --id id [--force]");
-    System.out.println("  imports data from quote (template), quote (database) or fred using given id (with optional force overwrites)\n");
+    System.out.println("dtrader import --source quote-template|quote-db|fred --import-id import-id [--import-ticker ticker] [--force] id");
+    System.out.println("  imports data from source using given id (and optional ticker for quote imports), with optional force overwrites\n");
     System.out.println("dtrader update\n");
     System.out.println("dtrader chart [--chart-name name] config-file.dt");
     System.out.println("  loads dtrader in gaphical mode and renders 'name' (defaults to first chart found)\n");
