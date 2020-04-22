@@ -24,6 +24,7 @@ import org.apache.commons.logging.LogFactory;
 public class DTrader {
   private static Log log = LogFactory.getFactory().getInstance(DTrader.class);
   private static String version = "0.70";
+  private HelpFormatter formatter = new HelpFormatter();
   
   public DTrader(List<String> args) {
     loadProperties();
@@ -33,53 +34,38 @@ public class DTrader {
   private void dispatch(List<String> argList) {
     if (argList.size() == 0) {
       usage();
-    } else if ("chart".equals((String) argList.get(0))) {
-      argList.remove(0);
-      chart(argList);
+    }
+    String cmd = argList.remove(0);
+    if ("import".equals(cmd)) {
+        runImport(argList);
+    } else if ("visual".equals(cmd)) {
+      runVisual(argList);
     } else {
       usage();
     }
   }
 
-  private void chart(List<String> argList) {
-    String chartName = null;
-    if (argList.size() == 0) {
-      log.error("no arguments");
-      usage();
-    }
-    String param = argList.remove(0);
-    if ("--chart-name".equals(param)) {
-      if (argList.size() == 0) {
-        log.error("missing --chart-name argument");
-        usage();
-      }
-      chartName = argList.remove(0);
-      if (argList.size() == 0) {
-        log.error("missing file");
-        usage();
-      }
-      param = argList.remove(0);
-    }
-    if (argList.size() > 0) {
-      log.error("too many arguments");
-      usage();
-    }
-    String fileName = param;
-    javax.swing.SwingUtilities.invokeLater(new Runnable() {
-      public void run() {
-        JFrame frame = new JFrame("DTrader");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JPanel panel = new ChartPanel();
-        panel.setBackground(Color.ORANGE);
-        frame.getContentPane().add(panel);
-        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setSize(size);
-        frame.setVisible(true);          
-      }
-    });    
+  private void usage() {
+    System.out.println("dtrader version " + version);
+    System.out.println("-------------------------------------------\n");
+    System.out.println("usage:\n");
+    System.out.println("dtrader import - imports data from various sources");
+    System.out.println("dtrader visual - runs dtrader in visual mode");
+    System.exit(1);
   }
   
-  private void usage() {
+  private void usageVisual() {
+    Options options = new Options();
+    Option opt = new Option("n", "name", true, "chart name");
+    opt.setArgName("chart-name");
+    options.addOption(opt);
+    opt = new Option("s", "script", true, "script file");
+    opt.setArgName("script-name");
+    options.addOption(opt);
+    formatter.printHelp("dtrader chart", options);
+  }
+  
+  private void usageImport() {
     Options options = new Options();
     Option opt = new Option("s", "source", true, "source (one of: qt-tpl | qt-db | fred | html | manual)");
     opt.setArgName("source");
@@ -110,19 +96,49 @@ public class DTrader {
     options.addOption(opt);
     opt = new Option("f", "force", false, "force overwrites");
     options.addOption(opt);
-    HelpFormatter formatter = new HelpFormatter();
     formatter.printHelp("dtrader import", options);    
-    
-    
-    System.out.println("dtrader version " + version);
-    System.out.println("-------------------------------------------\n");
-    System.out.println("usage:\n");
-    System.out.println("dtrader import --source quote-template|quote-db|fred --import-id import-id [--import-ticker ticker] [--force] id");
-    System.out.println("  imports data from source using given id (and optional ticker for quote imports), with optional force overwrites\n");
-    System.out.println("dtrader update\n");
-    System.out.println("dtrader chart [--chart-name name] config-file.dt");
-    System.out.println("  loads dtrader in gaphical mode and renders 'name' (defaults to first chart found)\n");
-    System.exit(1);
+  }
+
+  private void runVisual(List<String> argList) {
+    String chartName = null;
+    if (argList.size() == 0) {
+      log.error("no arguments");
+      usageVisual();
+    }
+    String param = argList.remove(0);
+    if ("--chart-name".equals(param)) {
+      if (argList.size() == 0) {
+        log.error("missing --chart-name argument");
+        usageVisual();
+      }
+      chartName = argList.remove(0);
+      if (argList.size() == 0) {
+        log.error("missing file");
+        usageVisual();
+      }
+      param = argList.remove(0);
+    }
+    if (argList.size() > 0) {
+      log.error("too many arguments");
+      usageVisual();
+    }
+    String fileName = param;
+    javax.swing.SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        JFrame frame = new JFrame("DTrader");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JPanel panel = new ChartPanel();
+        panel.setBackground(Color.ORANGE);
+        frame.getContentPane().add(panel);
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setSize(size);
+        frame.setVisible(true);          
+      }
+    });    
+  }
+  
+  private void runImport(List<String> argList) {
+    usageImport();
   }
   
   private void loadProperties() {
