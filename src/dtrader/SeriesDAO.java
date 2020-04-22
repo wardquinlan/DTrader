@@ -2,6 +2,8 @@ package dtrader;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.commons.logging.Log;
@@ -23,6 +25,10 @@ public class SeriesDAO {
             "?user=" + System.getProperty("dtrader.db.username") +
             "&password=" + System.getProperty("dtrader.db.password");
       Connection c = DriverManager.getConnection(url);  
+      PreparedStatement ps = c.prepareStatement("select * from series");
+      ResultSet resultSet = ps.executeQuery();
+      while (resultSet.next()) {
+      }
       c.close();
     }
     catch(Exception e)
