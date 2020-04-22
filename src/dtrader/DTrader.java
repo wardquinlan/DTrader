@@ -81,8 +81,16 @@ public class DTrader {
   
   private void usage() {
     Options options = new Options();
-    Option opt = new Option("s", "source", true, "the import source (quote-template | quote-db | fred)");
+    Option opt = new Option("d", "data-source", true, "the import source (quote-template | quote-db | fred)");
     opt.setArgName("source");
+    options.addOption(opt);
+    opt = new Option("i", "import-id", true, "the import id");
+    opt.setArgName("id");
+    options.addOption(opt);
+    opt = new Option("s", "scope", true, "the import scope");
+    opt.setArgName("scope");
+    options.addOption(opt);
+    opt = new Option("f", "force", false, "force import overwrites");
     options.addOption(opt);
     HelpFormatter formatter = new HelpFormatter();
     formatter.printHelp("dtrader import", options);    
