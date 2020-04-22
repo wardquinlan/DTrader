@@ -13,11 +13,16 @@ import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -26,20 +31,21 @@ public class DTrader {
   private static String version = "0.70";
   private HelpFormatter formatter = new HelpFormatter();
   
-  public DTrader(List<String> args) {
+  public DTrader(String[] args) {
     loadProperties();
     dispatch(args);
   }
 
-  private void dispatch(List<String> argList) {
-    if (argList.size() == 0) {
+  private void dispatch(String[] args) {
+    if (args.length == 0) {
       usage();
     }
-    String cmd = argList.remove(0);
+    String cmd = args[0];
+    args = ArrayUtils.remove(args, 0);
     if ("import".equals(cmd)) {
-        runImport(argList);
+      runImport(args);
     } else if ("visual".equals(cmd)) {
-      runVisual(argList);
+      runVisual(args);
     } else {
       usage();
     }
@@ -54,7 +60,7 @@ public class DTrader {
     System.exit(1);
   }
   
-  private void usageVisual() {
+  private void usageVisual(String[] args) {
     Options options = new Options();
     Option opt = new Option("n", "name", true, "chart name");
     opt.setArgName("chart-name");
@@ -65,10 +71,13 @@ public class DTrader {
     formatter.printHelp("dtrader chart", options);
   }
   
-  private void usageImport() {
+  private void usageImport(String[] args) {
     Options options = new Options();
+    //Option opt = new Option("
+    options = new Options();
     Option opt = new Option("s", "source", true, "source (one of: qt-tpl | qt-db | fred | html | manual)");
     opt.setArgName("source");
+    
     options.addOption(opt);
     opt = new Option("i", "input-id", true, "input id");
     opt.setArgName("id");
@@ -96,33 +105,19 @@ public class DTrader {
     options.addOption(opt);
     opt = new Option("f", "force", false, "force overwrites");
     options.addOption(opt);
-    formatter.printHelp("dtrader import", options);    
+    //formatter.printHelp("dtrader import", options);    
+    CommandLineParser parser = new DefaultParser();
+    try {
+      CommandLine cmd = parser.parse(options, args);
+      System.out.println(cmd.hasOption('i'));
+      System.out.println(cmd.hasOption("input-id"));
+    } catch(ParseException e) {
+      log.error(e);
+    }
+    
   }
 
-  private void runVisual(List<String> argList) {
-    String chartName = null;
-    if (argList.size() == 0) {
-      log.error("no arguments");
-      usageVisual();
-    }
-    String param = argList.remove(0);
-    if ("--chart-name".equals(param)) {
-      if (argList.size() == 0) {
-        log.error("missing --chart-name argument");
-        usageVisual();
-      }
-      chartName = argList.remove(0);
-      if (argList.size() == 0) {
-        log.error("missing file");
-        usageVisual();
-      }
-      param = argList.remove(0);
-    }
-    if (argList.size() > 0) {
-      log.error("too many arguments");
-      usageVisual();
-    }
-    String fileName = param;
+  private void runVisual(String[] args) {
     javax.swing.SwingUtilities.invokeLater(new Runnable() {
       public void run() {
         JFrame frame = new JFrame("DTrader");
@@ -137,8 +132,9 @@ public class DTrader {
     });    
   }
   
-  private void runImport(List<String> argList) {
-    usageImport();
+  private void runImport(String[] args) {
+    
+    usageImport(args);
   }
   
   private void loadProperties() {
@@ -162,7 +158,7 @@ public class DTrader {
       argList.add(args[i]);
     }
     
-    new DTrader(argList);
+    new DTrader(args);
 
     try {
       new SeriesDAO();
