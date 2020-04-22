@@ -13,6 +13,11 @@ import java.util.Map;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.OptionGroup;
+import org.apache.commons.cli.Options;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -75,6 +80,14 @@ public class DTrader {
   }
   
   private void usage() {
+    Options options = new Options();
+    Option opt = new Option("s", "source", true, "the import source (quote-template | quote-db | fred)");
+    opt.setArgName("source");
+    options.addOption(opt);
+    HelpFormatter formatter = new HelpFormatter();
+    formatter.printHelp("dtrader import", options);    
+    
+    
     System.out.println("dtrader version " + version);
     System.out.println("-------------------------------------------\n");
     System.out.println("usage:\n");
