@@ -81,7 +81,7 @@ public class DTrader {
   
   private void usage() {
     Options options = new Options();
-    Option opt = new Option("s", "source", true, "source (one of: qttemplate | qtdb | fred | manual)");
+    Option opt = new Option("s", "source", true, "source (one of: qt-tpl | qt-db | fred | html | manual)");
     opt.setArgName("source");
     options.addOption(opt);
     opt = new Option("i", "input-id", true, "input id");
@@ -95,6 +95,18 @@ public class DTrader {
     options.addOption(opt);
     opt = new Option("v", "value", true, "value (for manual imports)");
     opt.setArgName("value");
+    options.addOption(opt);
+    opt = new Option("u", "url", true, "url (for html imports)");
+    opt.setArgName("value");
+    options.addOption(opt);
+    opt = new Option("c", "class", true, "class name (for html imports)");
+    opt.setArgName("value");
+    options.addOption(opt);
+    opt = new Option("d", "date", true, "date (for html and manul imports)");
+    opt.setArgName("yyyy-mm-dd");
+    options.addOption(opt);
+    opt = new Option("t", "time", true, "time (for html and manul imports)");
+    opt.setArgName("hh:mm");
     options.addOption(opt);
     opt = new Option("f", "force", false, "force overwrites");
     options.addOption(opt);
