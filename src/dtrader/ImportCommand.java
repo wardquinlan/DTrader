@@ -68,13 +68,13 @@ public class ImportCommand extends Command {
     formatter.printHelp("dtrader import", options);
     System.out.println();
     System.out.println("examples:");
-    System.out.println("dtrader import --content-type csv --file /c/ng-static.txt --format date:yyyyMMdd,,source-id:CDN10,value -id CDN10");
-    System.out.println("dtrader import --content-type csv --file /c/ng-static.txt --format date:yyyyMMdd,scope-id:^GSPC.TXT,source-id:EPS,value -id GSPC:EPS");
-    System.out.println("dtrader import --content-type csv --file /c/XIU.txt --format date:yyyyMMdd,,,,value -id XIU");
+    System.out.println("dtrader import --content-type csv --filepath /c/ng-static.txt --format date:yyyyMMdd,,source-id:CDN10,value -id CDN10");
+    System.out.println("dtrader import --content-type csv --filepath /c/ng-static.txt --format date:yyyyMMdd,scope-id:^GSPC.TXT,source-id:EPS,value -id GSPC:EPS");
+    System.out.println("dtrader import --content-type csv --filepath /c/XIU.txt --format date:yyyyMMdd,,,,value -id XIU");
     System.out.println("dtrader import --content-type csv --url https://query1.finance.yahoo.com/v7/finance/download/XIU.TO --format date:yyyy-MM-dd,,,,value -id XIU");
     System.out.println("dtrader import --content-type html --url https://web.tmxmoney.com/quote.php?qm_symbol=XIU --currdate --class price -id XIU");
     System.out.println("dtrader import --content-type html --url https://web.tmxmoney.com/quote.php?qm_symbol=XIU --currtime --class price -id XIU");
     System.out.println("dtrader import --content-type fred --source-id VIXCLS -id VIX");
-    System.out.println("dtrader import --date 2020-01-17 --id GSPC:EPS --value 142.05");
+    System.out.println("dtrader import --date 2020-01-17 --id GSPC:EPS --value 142.05 --force");
   }
 }
