@@ -55,6 +55,8 @@ public class Tokenizer {
             tk = new Token(Token.INC);
           } else if (sb.toString().equals("const")) {
             tk = new Token(Token.CONST);
+          } else if (sb.toString().equals("chart")) {
+            tk = new Token(Token.CHART);
           } else if (funcCaller.isFunction(sb.toString())) {
             tk = new Token(Token.FUNC);
           } else {

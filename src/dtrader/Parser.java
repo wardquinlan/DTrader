@@ -19,7 +19,16 @@ public class Parser {
   public void parse(Token tk, TokenIterator itr) throws Exception {
     while (true) {
       if (tk.getType() == Token.CHART) {
-        throw new Exception("unsupported");
+        if (!itr.hasNext()) {
+          log.error("missing left brace");
+          throw new Exception("syntax error");
+        }
+        tk = itr.next();
+        if (tk.getType() != Token.LBRACE) {
+          log.error("missing left brace");
+          throw new Exception("syntax error");
+        }
+        parseScope(tk, itr);
       } else {
         parseStatement(tk, itr);
       }
@@ -51,6 +60,25 @@ public class Parser {
     if (itr2.hasNext()) {
       log.error("unexpected symbol at end of line");
       throw new Exception("syntax error");
+    }
+  }
+  
+  private void parseScope(Token tk, TokenIterator itr) throws Exception {
+    if (!itr.hasNext()) {
+      log.error("invalid scope declaration");
+      throw new Exception("syntax error");
+    }
+    tk = itr.next();
+    while (true) {
+      parseStatement(tk, itr);
+      if (!itr.hasNext()) {
+        log.error("unexpected end of scope");
+        throw new Exception("syntax error");
+      }
+      tk = itr.next();
+      if (tk.getType() == Token.RBRACE) {
+        break;
+      }
     }
   }
   
