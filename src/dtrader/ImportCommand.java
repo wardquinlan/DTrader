@@ -18,7 +18,7 @@ public class ImportCommand extends Command {
     Option opt = new Option("c", "content-type", true, "content type of the import (one of: csv | html | fred | manual [default])");
     opt.setArgName("type");
     options.addOption(opt);
-    opt = new Option("m", "format", true, "format when importing csv content (format similiar to date:yyyy-MM-dd,scope-id:id,source-id:id,value)");
+    opt = new Option("m", "format", true, "format when importing csv content (format similiar to: date:yyyy-MM-dd,scope-id:id,source-id:id,value)");
     opt.setArgName("format");
     options.addOption(opt);
     opt = new Option("s", "source-id", true, "source id");
@@ -42,9 +42,15 @@ public class ImportCommand extends Command {
     opt = new Option("v", "value", true, "value of the data point (manual imports only)");
     opt.setArgName("value");
     options.addOption(opt);
-    opt = new Option("d", "date", false, "use today's date");
+    opt = new Option("d", "date", true, "use specified date (format is yyyy-MM-dd)");
+    opt.setArgName("date");
+    opt.setRequired(true);
+    opt = new Option("t", "time", true, "use specified time (format is HH:mm)");
+    opt.setArgName("time");
+    opt.setRequired(true);
+    opt = new Option("x", "currdate", false, "use current date");
     options.addOption(opt);
-    opt = new Option("t", "time", false, "use current time");
+    opt = new Option("y", "currtime", false, "use current date and time");
     opt.setArgName("value");
     options.addOption(opt);
     
@@ -64,6 +70,11 @@ public class ImportCommand extends Command {
     System.out.println("examples:");
     System.out.println("dtrader import --content-type csv --file /c/ng-static.txt --format date:yyyyMMdd,,source-id:CDN10,value -id CDN10");
     System.out.println("dtrader import --content-type csv --file /c/ng-static.txt --format date:yyyyMMdd,scope-id:^GSPC.TXT,source-id:EPS,value -id GSPC:EPS");
-    System.out.println("dtrader import --content-type html --url https://web.tmxmoney.com/quote.php?qm_symbol=XIU --now --class price -id XIU");
+    System.out.println("dtrader import --content-type csv --file /c/XIU.txt --format date:yyyyMMdd,,,,value -id XIU");
+    System.out.println("dtrader import --content-type csv --url https://query1.finance.yahoo.com/v7/finance/download/XIU.TO --format date:yyyy-MM-dd,,,,value -id XIU");
+    System.out.println("dtrader import --content-type html --url https://web.tmxmoney.com/quote.php?qm_symbol=XIU --currdate --class price -id XIU");
+    System.out.println("dtrader import --content-type html --url https://web.tmxmoney.com/quote.php?qm_symbol=XIU --currtime --class price -id XIU");
+    System.out.println("dtrader import --content-type fred --source-id VIXCLS -id VIX");
+    System.out.println("dtrader import --date 2020-01-17 --id GSPC:EPS --value 142.05");
   }
 }
