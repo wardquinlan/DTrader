@@ -41,6 +41,7 @@ public class VisualCommand extends Command {
         parser.parse(tk, itr);
       }
       
+      /*
       javax.swing.SwingUtilities.invokeLater(new Runnable() {
         public void run() {
           JFrame frame = new JFrame("DTrader");
@@ -52,7 +53,8 @@ public class VisualCommand extends Command {
           frame.setSize(size);
           frame.setVisible(true);          
         }
-      });    
+      });
+      */    
     } catch(ParseException e) {
       usage(options);
       System.exit(1);

@@ -21,32 +21,36 @@ public class Parser {
       if (tk.getType() == Token.CHART) {
         throw new Exception("unsupported");
       } else {
-        List<Token> list = new ArrayList<Token>();
-        list.add(tk);
-        while (itr.hasNext() && itr.peek().getType() != Token.SEMI) {
-          list.add(itr.next());
-        }
-        if (!itr.hasNext()) {
-          log.error("missing semi colon");
-          throw new Exception("syntax error");
-        }
-        itr.next();
-        TokenIterator itr2 = new TokenIterator(list);
-        Token tk2 = itr2.next();
-        if (tk.getType() == Token.CONST) {
-          parseDeclaration(tk2, itr2);
-        } else {
-          expression(tk2, itr2);
-        }
-        if (itr2.hasNext()) {
-          log.error("unexpected symbol at end of line");
-          throw new Exception("syntax error");
-        }
+        parseStatement(tk, itr);
       }
       if (!itr.hasNext()) {
         break;
       }
       tk = itr.next();
+    }
+  }
+  
+  private void parseStatement(Token tk, TokenIterator itr) throws Exception {
+    List<Token> list = new ArrayList<Token>();
+    list.add(tk);
+    while (itr.hasNext() && itr.peek().getType() != Token.SEMI) {
+      list.add(itr.next());
+    }
+    if (!itr.hasNext()) {
+      log.error("missing semi colon");
+      throw new Exception("syntax error");
+    }
+    itr.next();
+    TokenIterator itr2 = new TokenIterator(list);
+    Token tk2 = itr2.next();
+    if (tk.getType() == Token.CONST) {
+      parseDeclaration(tk2, itr2);
+    } else {
+      expression(tk2, itr2);
+    }
+    if (itr2.hasNext()) {
+      log.error("unexpected symbol at end of line");
+      throw new Exception("syntax error");
     }
   }
   
