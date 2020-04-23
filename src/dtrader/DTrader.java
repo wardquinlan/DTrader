@@ -82,6 +82,7 @@ public class DTrader {
     options.addOption(opt);
     opt = new Option("i", "input-id", true, "input id");
     opt.setArgName("id");
+    System.out.println(opt.isRequired());
     options.addOption(opt);
     opt = new Option("o", "output-id", true, "output id");
     opt.setArgName("id");

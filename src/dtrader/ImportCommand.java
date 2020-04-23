@@ -18,7 +18,7 @@ public class ImportCommand extends Command {
     Option opt = new Option(null, "content-type", true, "content type of the import (one of: csv | html | fred | manual [default])");
     opt.setArgName("type");
     options.addOption(opt);
-    opt = new Option(null, "csv-format", true, "csv format (e.g. D:yyyy-MM-dd,scope,id,value)");
+    opt = new Option(null, "format", true, "format when importing csv content (e.g. date:yyyy-MM-dd,scope-id,source-id,value)");
     opt.setArgName("format");
     options.addOption(opt);
     opt = new Option(null, "source-id", true, "source id");
@@ -29,6 +29,21 @@ public class ImportCommand extends Command {
     options.addOption(opt);
     opt = new Option(null, "url", true, "url");
     opt.setArgName("url");
+    options.addOption(opt);
+    opt = new Option(null, "force", false, "force overwrite");
+    options.addOption(opt);
+    opt = new Option(null, "id", true, "id to store in database (required)");
+    opt.setArgName("id");
+    opt.setRequired(true);
+    options.addOption(opt);
+    opt = new Option(null, "class", true, "class which tags the html element storing the data point (html imports only)");
+    opt.setArgName("class");
+    options.addOption(opt);
+    opt = new Option(null, "value", true, "value of the data point (manual imports only)");
+    opt.setArgName("value");
+    options.addOption(opt);
+    opt = new Option(null, "now", true, "use today's date (time) during imports, if otherwise not available");
+    opt.setArgName("value");
     options.addOption(opt);
     
     try {
@@ -43,5 +58,9 @@ public class ImportCommand extends Command {
 
   private void usage(Options options) {
     formatter.printHelp("dtrader import", options);
+    System.out.println();
+    System.out.println("examples:");
+    System.out.println("    dtrader import --content-type csv --file /c/ng-static.txt --format date:yyyyMMdd,,source-id:CDN10,value -id CDN10");
+    System.out.println("    dtrader import --content-type csv --file /c/ng-static.txt --format date:yyyyMMdd,scope-id:^GSPC.TXT,source-id:EPS,value -id GSPC:EPS");
   }
 }
