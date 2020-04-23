@@ -31,19 +31,20 @@ public class DTrader {
   private static String version = "0.70";
   private HelpFormatter formatter = new HelpFormatter();
   
-  public DTrader(String[] args) {
+  public DTrader(String[] args) throws Exception {
     loadProperties();
     dispatch(args);
   }
 
-  private void dispatch(String[] args) {
+  private void dispatch(String[] args) throws Exception {
     if (args.length == 0) {
       usage();
     }
     String cmd = args[0];
     args = ArrayUtils.remove(args, 0);
     if ("import".equals(cmd)) {
-      runImport(args);
+      Command command = new ImportCommand();
+      command.execute(args);
     } else if ("visual".equals(cmd)) {
       runVisual(args);
     } else {
@@ -157,10 +158,9 @@ public class DTrader {
     for (int i = 0; i < args.length; i++) {
       argList.add(args[i]);
     }
-    
-    new DTrader(args);
 
     try {
+      new DTrader(args);
       new SeriesDAO();
     } catch(Exception e) {
       log.error(e);
