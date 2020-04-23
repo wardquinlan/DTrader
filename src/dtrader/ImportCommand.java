@@ -15,10 +15,10 @@ public class ImportCommand extends Command {
   @Override
   public void execute(String[] args) {
     Options options = new Options();
-    Option opt = new Option("t", "content-type", true, "content type of the import (one of: csv | html | fred | manual [default])");
+    Option opt = new Option("c", "content-type", true, "content type of the import (one of: csv | html | fred | manual [default])");
     opt.setArgName("type");
     options.addOption(opt);
-    opt = new Option("m", "format", true, "format when importing csv content (e.g. date:yyyy-MM-dd,scope-id,source-id,value)");
+    opt = new Option("m", "format", true, "format when importing csv content (format similiar to date:yyyy-MM-dd,scope-id:id,source-id:id,value)");
     opt.setArgName("format");
     options.addOption(opt);
     opt = new Option("s", "source-id", true, "source id");
@@ -36,13 +36,15 @@ public class ImportCommand extends Command {
     opt.setArgName("id");
     opt.setRequired(true);
     options.addOption(opt);
-    opt = new Option("c", "class", true, "class which tags the html element storing the data point (html imports only)");
+    opt = new Option("k", "class", true, "class which tags the html element storing the data point (html imports only)");
     opt.setArgName("class");
     options.addOption(opt);
     opt = new Option("v", "value", true, "value of the data point (manual imports only)");
     opt.setArgName("value");
     options.addOption(opt);
-    opt = new Option("n", "now", true, "use today's date (time) during imports, if otherwise not available");
+    opt = new Option("d", "date", false, "use today's date");
+    options.addOption(opt);
+    opt = new Option("t", "time", false, "use current time");
     opt.setArgName("value");
     options.addOption(opt);
     
@@ -62,5 +64,6 @@ public class ImportCommand extends Command {
     System.out.println("examples:");
     System.out.println("dtrader import --content-type csv --file /c/ng-static.txt --format date:yyyyMMdd,,source-id:CDN10,value -id CDN10");
     System.out.println("dtrader import --content-type csv --file /c/ng-static.txt --format date:yyyyMMdd,scope-id:^GSPC.TXT,source-id:EPS,value -id GSPC:EPS");
+    System.out.println("dtrader import --content-type html --url https://web.tmxmoney.com/quote.php?qm_symbol=XIU --now --class price -id XIU");
   }
 }
