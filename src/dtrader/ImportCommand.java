@@ -57,7 +57,6 @@ public class ImportCommand extends Command {
     try {
       CommandLineParser parser = new DefaultParser();
       CommandLine cmd = parser.parse(options, args);
-      System.out.println(cmd.hasOption("content-type"));
     } catch(ParseException e) {
       usage(options);
       System.exit(1);

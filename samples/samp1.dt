@@ -1,5 +1,5 @@
-include "../includes/colours.dt";
-include "../includes/formulas.dt";
+include "constants.dt";
+include "formulas.dt";
 
 -- variables (i.e. scalars) are implied
 -- these are all global variables
