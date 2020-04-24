@@ -37,7 +37,8 @@ public class VisualCommand extends Command {
       if (itr.hasNext()) {
         Parser parser = new Parser();
         Token tk = itr.next();
-        Scope scope = parser.parse(tk, itr);
+        Scope root = parser.parse(tk, itr);
+        System.out.println(root);
       }
       
       /*

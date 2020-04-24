@@ -16,4 +16,13 @@ public class Chart {
   public Scope getScope() {
     return scope;
   }
+  
+  @Override
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+    sb.append("CHART.name=\n" + name);
+    sb.append("CHART.scope=\n");
+    sb.append(scope);
+    return sb.toString();
+  }
 }

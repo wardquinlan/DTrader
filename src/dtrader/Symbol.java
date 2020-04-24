@@ -16,13 +16,21 @@ public class Symbol {
   public boolean isConstant() {
     return constant;
   }
+  
   public void setConstant(boolean constant) {
     this.constant = constant;
   }
+  
   public Object getValue() {
     return value;
   }
+  
   public void setValue(Object value) {
     this.value = value;
+  }
+  
+  @Override
+  public String toString() {
+    return "SYMBOL=" + value + (constant ? " (constant)" : "");
   }
 }
