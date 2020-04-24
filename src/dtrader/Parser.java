@@ -20,13 +20,22 @@ public class Parser {
     while (true) {
       if (tk.getType() == Token.CHART) {
         if (!itr.hasNext()) {
+          log.error("missing chart name");
+          throw new Exception("syntax error: chart name");
+        }
+        tk = itr.next();
+        if (tk.getType() != Token.SYMBOL) {
+          log.error("invalid chart name");
+          throw new Exception("syntax error: chart name");
+        }
+        if (!itr.hasNext()) {
           log.error("missing left brace");
-          throw new Exception("syntax error");
+          throw new Exception("syntax error: chart");
         }
         tk = itr.next();
         if (tk.getType() != Token.LBRACE) {
           log.error("missing left brace");
-          throw new Exception("syntax error");
+          throw new Exception("syntax error: chart");
         }
         parseScope(tk, itr);
       } else {
