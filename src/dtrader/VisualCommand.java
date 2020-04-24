@@ -35,10 +35,9 @@ public class VisualCommand extends Command {
       Tokenizer tokenizer = new Tokenizer(cmd.getOptionValue("filepath"));
       TokenIterator itr = tokenizer.tokenize();
       if (itr.hasNext()) {
-        Map<String, Symbol> symbolTable = new HashMap<String, Symbol>();
-        Parser parser = new Parser(symbolTable);
+        Parser parser = new Parser();
         Token tk = itr.next();
-        parser.parse(tk, itr);
+        Scope scope = parser.parse(tk, itr);
       }
       
       /*
