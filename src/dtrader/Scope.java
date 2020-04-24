@@ -23,13 +23,16 @@ public class Scope {
   
   public Symbol getSymbol(String name) {
     if (symbolTable.get(name) == null) {
+      if (parent == null) {
+        return null;
+      }
       return parent.getSymbol(name);
     }
     return symbolTable.get(name);
   }
 
   public void putSymbol(String name, Symbol symbol) {
-    if (parent.getSymbol(name) != null) {
+    if (parent != null && parent.getSymbol(name) != null) {
       parent.putSymbol(name, symbol);
     } else {
       symbolTable.put(name, symbol);
@@ -38,13 +41,16 @@ public class Scope {
   
   public Object getProperty(String name) {
     if (properties.get(name) == null) {
+      if (parent == null) {
+        return null;
+      }
       return parent.getProperty(name);
     }
     return properties.get(name);
   }
   
   public void putProperty(String name, Object value) {
-    if (parent.getProperty(name) != null) {
+    if (parent != null && parent.getProperty(name) != null) {
       parent.putProperty(name, value);
     } else {
       properties.put(name, value);
