@@ -90,7 +90,7 @@ public class Scope {
     sb.append("]\n");
     sb.append("SCOPE.charts=[\n");
     for (Chart chart: charts) {
-      sb.append(chart + "\n");
+      sb.append(chart);
     }
     sb.append("]\n");
     return sb.toString();
