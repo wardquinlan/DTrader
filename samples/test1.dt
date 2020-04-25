@@ -1,14 +1,4 @@
 include "constants.dt";
 
-const P = 3;
-const Q = 5;
-PQ = P * Q;
-println(PQ);
-PQ = 0;
-println(PQ);
-X = BLUE;
-println(X);
-const Y = 2 * 5^2 - 1;
-println("value of \"Y\" is:" + Y);
-X = 7;
-println(X);
+set_property("chart.background", #RED);
+

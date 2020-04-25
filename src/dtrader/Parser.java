@@ -129,7 +129,7 @@ public class Parser {
     if (scope.getSymbol(symbolName) != null) {
       throw new Exception("symbol already defined: " + symbolName);
     }
-    scope.putSymbol(symbolName, new Symbol(val, true));
+    scope.setSymbol(symbolName, new Symbol(val, true));
   }
   
   private Object expression(Token tk, TokenIterator itr, Scope scope) throws Exception {
@@ -329,7 +329,7 @@ public class Parser {
         if (symbol != null && symbol.isConstant()) {
           throw new Exception("cannot write to a const: " + symbolName);
         }
-        scope.putSymbol(symbolName, new Symbol(val));
+        scope.setSymbol(symbolName, new Symbol(val));
       }
        
       Symbol symbol = scope.getSymbol(symbolName);
@@ -385,7 +385,7 @@ public class Parser {
           }
         }
       }
-      return funcCaller.invokeFunction(funcName, params);
+      return funcCaller.invokeFunction(funcName, params, scope);
     }
     throw new Exception("unsupported primary expression: " + tk);
   }

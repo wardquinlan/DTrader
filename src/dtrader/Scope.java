@@ -31,9 +31,9 @@ public class Scope {
     return symbolTable.get(name);
   }
 
-  public void putSymbol(String name, Symbol symbol) {
+  public void setSymbol(String name, Symbol symbol) {
     if (parent != null && parent.getSymbol(name) != null) {
-      parent.putSymbol(name, symbol);
+      parent.setSymbol(name, symbol);
     } else {
       symbolTable.put(name, symbol);
     }
@@ -49,9 +49,9 @@ public class Scope {
     return properties.get(name);
   }
   
-  public void putProperty(String name, Object value) {
+  public void setProperty(String name, Object value) {
     if (parent != null && parent.getProperty(name) != null) {
-      parent.putProperty(name, value);
+      parent.setProperty(name, value);
     } else {
       properties.put(name, value);
     }
