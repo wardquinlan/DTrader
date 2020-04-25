@@ -8,6 +8,9 @@ import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -53,10 +56,16 @@ public class VisualCommand extends Command {
             log.warn("chart.background not set, using default background color");
           } 
           panel.setBackground(colorBackground);
-          frame.getContentPane().add(panel);
+          JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.BOTTOM);
+          tabbedPane.addTab("Tab 1", panel);
+          tabbedPane.addTab("Tab 2", new JPanel());
+          JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tabbedPane, new JPanel());
+          
+          frame.getContentPane().add(splitPane);
           Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
           frame.setSize(size);
-          frame.setVisible(true);          
+          frame.setVisible(true);
+          splitPane.setDividerLocation(0.75);
         }
       });
     } catch(ParseException e) {
