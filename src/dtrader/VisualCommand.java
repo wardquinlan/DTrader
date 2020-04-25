@@ -31,30 +31,34 @@ public class VisualCommand extends Command {
     try {
       CommandLineParser cmdParser = new DefaultParser();
       CommandLine cmd = cmdParser.parse(options, args);
-      
       Tokenizer tokenizer = new Tokenizer(cmd.getOptionValue("filepath"));
       TokenIterator itr = tokenizer.tokenize();
-      if (itr.hasNext()) {
-        Parser parser = new Parser();
-        Token tk = itr.next();
-        Scope root = parser.parse(tk, itr);
-        System.out.println(root);
+      if (!itr.hasNext()) {
+        throw new Exception("empty script file");
       }
-      
-      /*
+
+      Parser parser = new Parser();
+      Token tk = itr.next();
+      Scope root = parser.parse(tk, itr);
       javax.swing.SwingUtilities.invokeLater(new Runnable() {
         public void run() {
           JFrame frame = new JFrame("DTrader");
           frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
           JPanel panel = new ChartPanel();
-          panel.setBackground(Color.ORANGE);
+          Object obj = root.getProperty("chart.background");
+          Color colorBackground = new Color(0xcccccc);
+          if (obj != null && obj instanceof Long) {
+            colorBackground = new Color(((Long) obj).intValue());
+          } else {
+            log.warn("chart.background not set, using default background color");
+          } 
+          panel.setBackground(colorBackground);
           frame.getContentPane().add(panel);
           Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
           frame.setSize(size);
           frame.setVisible(true);          
         }
       });
-      */    
     } catch(ParseException e) {
       usage(options);
       System.exit(1);
