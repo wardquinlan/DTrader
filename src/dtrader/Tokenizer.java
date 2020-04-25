@@ -91,6 +91,9 @@ public class Tokenizer {
           while (Character.isDigit(rdr.peek()) || (rdr.peek() >= 'a' && rdr.peek() <= 'f') || (rdr.peek() >= 'A' && rdr.peek() <= 'F')) {
             sb.append((char) rdr.read());
           }
+          if (sb.toString().equals("")) {
+            throw new Exception("invalid hex value");
+          }
           tk.setValue(Long.parseLong(sb.toString(), 16));
           list.add(tk);
         } else if (val == '"') {
