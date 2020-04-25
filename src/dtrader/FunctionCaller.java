@@ -19,6 +19,8 @@ public class FunctionCaller {
         return println(params);
       case "set_property":
         return setProperty(params, scope);
+      case "get_property":
+        return getProperty(params, scope);
       default:
         throw new Exception("unknown function: " + funcName);
     }
@@ -35,6 +37,20 @@ public class FunctionCaller {
       System.out.println(params.get(0).toString());
       return params.get(0);
     }
+  }
+  
+  private Object getProperty(List<Object> params, Scope scope) throws Exception {
+    if (params.size() != 1) {
+      throw new Exception("get_property: requires 1 argument");
+    }
+    if (!(params.get(0) instanceof String)) {
+      throw new Exception("get_property: param 1 must be a string");
+    }
+    Object value = scope.getProperty((String) params.get(0));
+    if (value == null) {
+      throw new Exception("get_property: property not found: " + params.get(0));
+    }
+    return scope.getProperty((String) params.get(0));
   }
   
   private Object setProperty(List<Object> params, Scope scope) throws Exception {
