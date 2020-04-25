@@ -61,6 +61,9 @@ public class Parser {
     Scope scopeCurr = new Scope(scope);
     tk = itr.next();
     while (true) {
+      if (tk.getType() == Token.RBRACE) {
+        break;
+      }
       Statement statement = parseStatement(tk, itr, scopeCurr);
       if (!itr.hasNext()) {
         log.error("unexpected end of scope");
@@ -68,9 +71,6 @@ public class Parser {
       }
       scope.getStatements().add(statement);
       tk = itr.next();
-      if (tk.getType() == Token.RBRACE) {
-        break;
-      }
     }
     return scopeCurr;
   }
