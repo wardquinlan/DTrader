@@ -10,7 +10,8 @@ public class FunctionCaller {
   public boolean isFunction(String funcName) {
     return funcName.equals("println")      ||
            funcName.equals("set_property") ||
-           funcName.equals("get_property");
+           funcName.equals("get_property") ||
+           funcName.equals("print_scope");
   }
   
   public Object invokeFunction(String funcName, List<Object> params, Scope scope) throws Exception {
@@ -21,9 +22,19 @@ public class FunctionCaller {
         return setProperty(params, scope);
       case "get_property":
         return getProperty(params, scope);
+      case "print_scope":
+        return print_scope(params, scope);
       default:
         throw new Exception("unknown function: " + funcName);
     }
+  }
+  
+  private Object print_scope(List<Object> params, Scope scope) throws Exception {
+    if (params.size() > 0) {
+      throw new Exception("print_scope: too many arguments");
+    }
+    params.add(scope);
+    return println(params);
   }
   
   private Object println(List<Object> params) throws Exception {
