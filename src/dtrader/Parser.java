@@ -150,12 +150,12 @@ public class Parser {
           val1 = val1 + val2.toString();
         } else if (val1 instanceof Long && val2 instanceof Long) {
           val1 = new Long((Long) val1 + (Long) val2);
-        } else if (val1 instanceof Long && val2 instanceof Double) {
-          val1 = new Double((Long) val1 + (Double) val2);
-        } else if (val1 instanceof Double && val2 instanceof Long) {
-          val1 = new Double((Double) val1 + (Long) val2);
-        } else if (val1 instanceof Double && val2 instanceof Double) {
-          val1 = new Double((Double) val1 + (Double) val2);
+        } else if (val1 instanceof Long && val2 instanceof Float) {
+          val1 = new Float((Long) val1 + (Float) val2);
+        } else if (val1 instanceof Float && val2 instanceof Long) {
+          val1 = new Float((Float) val1 + (Long) val2);
+        } else if (val1 instanceof Float && val2 instanceof Float) {
+          val1 = new Float((Float) val1 + (Float) val2);
         } else {
           log.error("invalid PLUS operation");
           throw new Exception("syntax error");
@@ -172,12 +172,12 @@ public class Parser {
           throw new Exception("unsupported string operation: " + val1);
         } else if (val1 instanceof Long && val2 instanceof Long) {
           val1 = new Long((Long) val1 - (Long) val2);
-        } else if (val1 instanceof Long && val2 instanceof Double) {
-          val1 = new Double((Long) val1 - (Double) val2);
-        } else if (val1 instanceof Double && val2 instanceof Long) {
-          val1 = new Double((Double) val1 - (Long) val2);
-        } else if (val1 instanceof Double && val2 instanceof Double) {
-          val1 = new Double((Double) val1 - (Double) val2);
+        } else if (val1 instanceof Long && val2 instanceof Float) {
+          val1 = new Float((Long) val1 - (Float) val2);
+        } else if (val1 instanceof Float && val2 instanceof Long) {
+          val1 = new Float((Float) val1 - (Long) val2);
+        } else if (val1 instanceof Float && val2 instanceof Float) {
+          val1 = new Float((Float) val1 - (Float) val2);
         } else {
           log.error("invalid MINUS operation");
           throw new Exception("syntax error");
@@ -205,12 +205,12 @@ public class Parser {
         Object val2 = exp(tk, itr, scope);
         if (val1 instanceof Long && val2 instanceof Long) {
           val1 = new Long((Long) val1 * (Long) val2);
-        } else if (val1 instanceof Long && val2 instanceof Double) {
-          val1 = new Double((Long) val1 * (Double) val2);
-        } else if (val1 instanceof Double && val2 instanceof Long) {
-          val1 = new Double((Double) val1 * (Long) val2);
-        } else if (val1 instanceof Double && val2 instanceof Double) {
-          val1 = new Double((Double) val1 * (Double) val2);
+        } else if (val1 instanceof Long && val2 instanceof Float) {
+          val1 = new Float((Long) val1 * (Float) val2);
+        } else if (val1 instanceof Float && val2 instanceof Long) {
+          val1 = new Float((Float) val1 * (Long) val2);
+        } else if (val1 instanceof Float && val2 instanceof Float) {
+          val1 = new Float((Float) val1 * (Float) val2);
         } else {
           log.error("invalid MULT operation");
           throw new Exception("syntax error");
@@ -230,21 +230,21 @@ public class Parser {
           if ((Long) val1 % (Long) val2 == 0) {
             val1 = new Long((Long) val1 / (Long) val2);
           } else {
-            val1 = new Double(((Long) val1).doubleValue() / ((Long) val2).doubleValue());
+            val1 = new Float(((Long) val1).floatValue() / ((Long) val2).floatValue());
           }
-        } else if (val1 instanceof Long && val2 instanceof Double) {
-          if ((Double) val2 == 0d) {
+        } else if (val1 instanceof Long && val2 instanceof Float) {
+          if ((Float) val2 == 0f) {
             throw new Exception("divide by 0 error");
           }
-          val1 = new Double((Long) val1 / (Double) val2);
-        } else if (val1 instanceof Double && val2 instanceof Long) {
+          val1 = new Float((Long) val1 / (Float) val2);
+        } else if (val1 instanceof Float && val2 instanceof Long) {
           if ((Long) val2 == 0) {
             throw new Exception("divide by 0 error");
           }
-          val1 = new Double((Double) val1 / (Long) val2);
-        } else if (val1 instanceof Double && val2 instanceof Double) {
-          val1 = new Double((Double) val1 / (Double) val2);
-          if ((Double) val2 == 0d) {
+          val1 = new Float((Float) val1 / (Long) val2);
+        } else if (val1 instanceof Float && val2 instanceof Float) {
+          val1 = new Float((Float) val1 / (Float) val2);
+          if ((Float) val2 == 0f) {
             throw new Exception("divide by 0 error");
           }
         } else {
@@ -273,16 +273,17 @@ public class Parser {
         tk = itr.next();
         Object val2 = primary(tk, itr, scope);
         if (val1 instanceof Long) {
-          val1 = ((Long) val1).doubleValue();
+          val1 = ((Long) val1).floatValue();
         }
         if (val2 instanceof Long) {
-          val2 = ((Long) val2).doubleValue();
+          val2 = ((Long) val2).floatValue();
         }
-        if (!(val1 instanceof Double) || !(val2 instanceof Double)) {
-          log.error("exponentials must be double");
+        if (!(val1 instanceof Float) || !(val2 instanceof Float)) {
+          log.error("exponentials must be real");
           throw new Exception("syntax error");
         }
-        val1 = Math.pow((Double) val1, (Double) val2);
+        val1 = Math.pow((Float) val1, (Float) val2);
+        val1 = ((Double) val1).floatValue();
       } else {
         break;
       }
@@ -297,7 +298,7 @@ public class Parser {
     if (tk.getType() == Token.PLUS) {
       tk = itr.next();
       Object val = primary(tk, itr, scope);
-      if (!(val instanceof Long) && !(val instanceof Double)) {
+      if (!(val instanceof Long) && !(val instanceof Float)) {
         log.error("invalid unary plus");
         throw new Exception("syntax error");
       }
@@ -308,8 +309,8 @@ public class Parser {
       Object val = primary(tk, itr, scope);
       if (val instanceof Long) {
         return new Long(-(Long) val);
-      } else if (val instanceof Double) {
-        return new Double(-(Double) val);
+      } else if (val instanceof Float) {
+        return new Float(-(Float) val);
       } else {
         log.error("invalid unary minus");
         throw new Exception("syntax error");

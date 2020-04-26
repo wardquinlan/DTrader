@@ -78,7 +78,7 @@ public class Tokenizer {
           }
           if (sb.toString().contains(".")) {
             Token tk = new Token(Token.REAL);
-            tk.setValue(Double.parseDouble(sb.toString()));
+            tk.setValue(Float.parseFloat(sb.toString()));
             list.add(tk);
           } else {
             Token tk = new Token(Token.INTEGER);

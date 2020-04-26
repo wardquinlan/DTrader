@@ -55,21 +55,18 @@ public class VisualCommand extends Command {
           JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tabbedPane, new JPanel());
           frame.getContentPane().add(splitPane);
           Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+          Float f;
           frame.setSize(size);
           frame.setVisible(true);
           splitPane.setDividerLocation(0.75);
         }
       });
     } catch(ParseException e) {
-      usage(options);
+      usage("visual", options);
       System.exit(1);
     } catch(Exception e) {
       log.error(e);
       System.exit(1);
     }
-  }
-  
-  private void usage(Options options) {
-    formatter.printHelp("dtrader visual", options);
   }
 }

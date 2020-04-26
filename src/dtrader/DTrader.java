@@ -47,6 +47,9 @@ public class DTrader {
     } else if ("visual".equals(cmd)) {
       Command command = new VisualCommand();
       command.execute(args);
+    } else if ("script".equals(cmd)) {
+      Command command = new ScriptCommand();
+      command.execute(args);
     } else {
       usage();
     }
@@ -58,6 +61,7 @@ public class DTrader {
     System.out.println("usage:\n");
     System.out.println("dtrader import - imports data from various sources");
     System.out.println("dtrader visual - runs dtrader in visual mode");
+    System.out.println("dtrader script - runs a dtrader script");
     System.exit(1);
   }
   

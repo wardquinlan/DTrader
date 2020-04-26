@@ -64,7 +64,7 @@ public class ImportCommand extends Command {
   }
 
   private void usage(Options options) {
-    formatter.printHelp("dtrader import", options);
+    super.usage("import", options);
     System.out.println();
     System.out.println("examples:");
     System.out.println("dtrader import --content-type csv --filepath /c/ng-static.txt --format date:yyyyMMdd,,source-id:CDN10,value -id CDN10");
