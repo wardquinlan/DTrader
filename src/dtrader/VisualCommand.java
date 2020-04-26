@@ -47,20 +47,12 @@ public class VisualCommand extends Command {
         public void run() {
           JFrame frame = new JFrame("DTrader");
           frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-          JPanel panel = new ChartPanel();
-          Object obj = root.getProperty("chart.background");
-          Color colorBackground = new Color(0xcccccc);
-          if (obj != null && obj instanceof Long) {
-            colorBackground = new Color(((Long) obj).intValue());
-          } else {
-            log.warn("chart.background not set, using default background color");
-          } 
-          panel.setBackground(colorBackground);
           JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.BOTTOM);
-          tabbedPane.addTab("Tab 1", panel);
-          tabbedPane.addTab("Tab 2", new JPanel());
+          for (Chart chart: root.getCharts()) {
+            JPanel panel = new ChartPanel(chart);
+            tabbedPane.addTab(chart.getName(), panel);;
+          }
           JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tabbedPane, new JPanel());
-          
           frame.getContentPane().add(splitPane);
           Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
           frame.setSize(size);
