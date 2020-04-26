@@ -148,12 +148,12 @@ public class Parser {
         Object val2 = term(tk, itr, scope);
         if (val1 instanceof String) {
           val1 = val1 + val2.toString();
-        } else if (val1 instanceof Long && val2 instanceof Long) {
-          val1 = new Long((Long) val1 + (Long) val2);
-        } else if (val1 instanceof Long && val2 instanceof Float) {
-          val1 = new Float((Long) val1 + (Float) val2);
-        } else if (val1 instanceof Float && val2 instanceof Long) {
-          val1 = new Float((Float) val1 + (Long) val2);
+        } else if (val1 instanceof Integer && val2 instanceof Integer) {
+          val1 = new Integer((Integer) val1 + (Integer) val2);
+        } else if (val1 instanceof Integer && val2 instanceof Float) {
+          val1 = new Float((Integer) val1 + (Float) val2);
+        } else if (val1 instanceof Float && val2 instanceof Integer) {
+          val1 = new Float((Float) val1 + (Integer) val2);
         } else if (val1 instanceof Float && val2 instanceof Float) {
           val1 = new Float((Float) val1 + (Float) val2);
         } else {
@@ -170,12 +170,12 @@ public class Parser {
         Object val2 = term(tk, itr, scope);
         if (val1 instanceof String) {
           throw new Exception("unsupported string operation: " + val1);
-        } else if (val1 instanceof Long && val2 instanceof Long) {
-          val1 = new Long((Long) val1 - (Long) val2);
-        } else if (val1 instanceof Long && val2 instanceof Float) {
-          val1 = new Float((Long) val1 - (Float) val2);
-        } else if (val1 instanceof Float && val2 instanceof Long) {
-          val1 = new Float((Float) val1 - (Long) val2);
+        } else if (val1 instanceof Integer && val2 instanceof Integer) {
+          val1 = new Integer((Integer) val1 - (Integer) val2);
+        } else if (val1 instanceof Integer && val2 instanceof Float) {
+          val1 = new Float((Integer) val1 - (Float) val2);
+        } else if (val1 instanceof Float && val2 instanceof Integer) {
+          val1 = new Float((Float) val1 - (Integer) val2);
         } else if (val1 instanceof Float && val2 instanceof Float) {
           val1 = new Float((Float) val1 - (Float) val2);
         } else {
@@ -203,12 +203,12 @@ public class Parser {
         }
         tk = itr.next();
         Object val2 = exp(tk, itr, scope);
-        if (val1 instanceof Long && val2 instanceof Long) {
-          val1 = new Long((Long) val1 * (Long) val2);
-        } else if (val1 instanceof Long && val2 instanceof Float) {
-          val1 = new Float((Long) val1 * (Float) val2);
-        } else if (val1 instanceof Float && val2 instanceof Long) {
-          val1 = new Float((Float) val1 * (Long) val2);
+        if (val1 instanceof Integer && val2 instanceof Integer) {
+          val1 = new Integer((Integer) val1 * (Integer) val2);
+        } else if (val1 instanceof Integer && val2 instanceof Float) {
+          val1 = new Float((Integer) val1 * (Float) val2);
+        } else if (val1 instanceof Float && val2 instanceof Integer) {
+          val1 = new Float((Float) val1 * (Integer) val2);
         } else if (val1 instanceof Float && val2 instanceof Float) {
           val1 = new Float((Float) val1 * (Float) val2);
         } else {
@@ -223,25 +223,25 @@ public class Parser {
         }
         tk = itr.next();
         Object val2 = exp(tk, itr, scope);
-        if (val1 instanceof Long && val2 instanceof Long) {
-          if ((Long) val2 == 0) {
+        if (val1 instanceof Integer && val2 instanceof Integer) {
+          if ((Integer) val2 == 0) {
             throw new Exception("divide by 0 error");
           }
-          if ((Long) val1 % (Long) val2 == 0) {
-            val1 = new Long((Long) val1 / (Long) val2);
+          if ((Integer) val1 % (Integer) val2 == 0) {
+            val1 = new Integer((Integer) val1 / (Integer) val2);
           } else {
-            val1 = new Float(((Long) val1).floatValue() / ((Long) val2).floatValue());
+            val1 = new Float(((Integer) val1).floatValue() / ((Integer) val2).floatValue());
           }
-        } else if (val1 instanceof Long && val2 instanceof Float) {
+        } else if (val1 instanceof Integer && val2 instanceof Float) {
           if ((Float) val2 == 0f) {
             throw new Exception("divide by 0 error");
           }
-          val1 = new Float((Long) val1 / (Float) val2);
-        } else if (val1 instanceof Float && val2 instanceof Long) {
-          if ((Long) val2 == 0) {
+          val1 = new Float((Integer) val1 / (Float) val2);
+        } else if (val1 instanceof Float && val2 instanceof Integer) {
+          if ((Integer) val2 == 0) {
             throw new Exception("divide by 0 error");
           }
-          val1 = new Float((Float) val1 / (Long) val2);
+          val1 = new Float((Float) val1 / (Integer) val2);
         } else if (val1 instanceof Float && val2 instanceof Float) {
           val1 = new Float((Float) val1 / (Float) val2);
           if ((Float) val2 == 0f) {
@@ -272,11 +272,11 @@ public class Parser {
         }
         tk = itr.next();
         Object val2 = primary(tk, itr, scope);
-        if (val1 instanceof Long) {
-          val1 = ((Long) val1).floatValue();
+        if (val1 instanceof Integer) {
+          val1 = ((Integer) val1).floatValue();
         }
-        if (val2 instanceof Long) {
-          val2 = ((Long) val2).floatValue();
+        if (val2 instanceof Integer) {
+          val2 = ((Integer) val2).floatValue();
         }
         if (!(val1 instanceof Float) || !(val2 instanceof Float)) {
           log.error("exponentials must be real");
@@ -298,7 +298,7 @@ public class Parser {
     if (tk.getType() == Token.PLUS) {
       tk = itr.next();
       Object val = primary(tk, itr, scope);
-      if (!(val instanceof Long) && !(val instanceof Float)) {
+      if (!(val instanceof Integer) && !(val instanceof Float)) {
         log.error("invalid unary plus");
         throw new Exception("syntax error");
       }
@@ -307,8 +307,8 @@ public class Parser {
     if (tk.getType() == Token.MINUS) {
       tk = itr.next();
       Object val = primary(tk, itr, scope);
-      if (val instanceof Long) {
-        return new Long(-(Long) val);
+      if (val instanceof Integer) {
+        return new Integer(-(Integer) val);
       } else if (val instanceof Float) {
         return new Float(-(Float) val);
       } else {

@@ -82,7 +82,7 @@ public class Tokenizer {
             list.add(tk);
           } else {
             Token tk = new Token(Token.INTEGER);
-            tk.setValue(Long.parseLong(sb.toString()));
+            tk.setValue(Integer.parseInt(sb.toString()));
             list.add(tk);
           }
         } else if (val == '#') {
@@ -94,7 +94,7 @@ public class Tokenizer {
           if (sb.toString().equals("")) {
             throw new Exception("invalid hex value");
           }
-          tk.setValue(Long.parseLong(sb.toString(), 16));
+          tk.setValue(Integer.parseInt(sb.toString(), 16));
           list.add(tk);
         } else if (val == '"') {
           Token tk = new Token(Token.STRING);
