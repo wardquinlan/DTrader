@@ -2,6 +2,7 @@ package dtrader;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
@@ -43,7 +44,12 @@ public class ChartPanel extends JPanel {
         log.warn("property chart.title.size not an integer");
       }
     }
-    g.drawString((String) chart.getScope().getProperty("chart.title"), 0, 0);
+    int widthPanel = getWidth();
+    FontMetrics m = g.getFontMetrics(g.getFont());
+    int heightFont = m.getHeight();
+    int widthText = m.stringWidth((String) chart.getScope().getProperty("chart.title"));
+    
+    g.drawString((String) chart.getScope().getProperty("chart.title"), (widthPanel - widthText) / 2, heightFont);
     g.setFont(fontOrig);
     g.setColor(colorOrig);
   }
