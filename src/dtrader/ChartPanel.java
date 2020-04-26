@@ -6,27 +6,50 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class ChartPanel extends JPanel {
+  private static Log log = LogFactory.getFactory().getInstance(ChartPanel.class);
   private Chart chart;
   
   public ChartPanel(Chart chart) {
     this.chart = chart;
   }
   
+  private void paintTitle(Graphics g) {
+    if (chart.getScope().getProperty("chart.title") == null) {
+      return;
+    }
+    if (!(chart.getScope().getProperty("chart.title") instanceof String)) {
+      log.warn("property chart.title not a string");
+      return;
+    }
+    Font fontOrig = g.getFont();
+    Color colorOrig = g.getColor();
+    if (chart.getScope().getProperty("chart.title.color") != null) {
+      if (chart.getScope().getProperty("chart.title.color") instanceof Integer) { 
+        g.setColor(new Color((Integer) chart.getScope().getProperty("chart.title.color")));
+      } else {
+        log.warn("property chart.title.color not an integer");
+      }
+    }
+    if (chart.getScope().getProperty("chart.title.size") != null) {
+      if (chart.getScope().getProperty("chart.title.size") instanceof Integer) {
+        int size = (Integer) chart.getScope().getProperty("chart.title.size");
+        Font font = new Font(g.getFont().getName(), g.getFont().getStyle(), size);
+        g.setFont(font);
+      } else {
+        log.warn("property chart.title.size not an integer");
+      }
+    }
+    g.drawString((String) chart.getScope().getProperty("chart.title"), 0, 0);
+    g.setFont(fontOrig);
+    g.setColor(colorOrig);
+  }
+  
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
-    System.out.println(g.getFont().getName());
-    System.out.println(g.getFont().getStyle());
-    System.out.println(g.getFont().getSize());
-    long l = (Long) chart.getScope().getProperty("font.size");
-    
-    Font font = new Font(g.getFont().getName(), g.getFont().getStyle(), (int) l);
-    g.setFont(font);
-    g.setColor(Color.BLUE);
-    g.drawLine(30, 50, 70, 90);
-    //g.drawRect(80, 80, 200, 100);
-    
-    g.fillRect(80, 80, 200, 100);
-    g.drawString("Hello there", 30, 50);
+    paintTitle(g);
   }
 }
