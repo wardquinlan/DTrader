@@ -18,6 +18,17 @@ public class ChartPanel extends JPanel {
     this.chart = chart;
   }
   
+  private void paintBackground(Graphics g) {
+    if (chart.getScope().getProperty("chart.background.color") == null) {
+      return;
+    }
+    if (!(chart.getScope().getProperty("chart.background.color") instanceof Integer)) {
+      log.warn("property chart.background.color not an integer");
+      return;
+    }
+    setBackground(new Color((Integer) chart.getScope().getProperty("chart.background.color")));
+  }
+  
   private void paintTitle(Graphics g) {
     if (chart.getScope().getProperty("chart.title") == null) {
       return;
@@ -56,6 +67,7 @@ public class ChartPanel extends JPanel {
   
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
+    paintBackground(g);
     paintTitle(g);
   }
 }
