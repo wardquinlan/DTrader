@@ -48,12 +48,17 @@ public class Parser {
       if (tk.getType() == Token.RBRACE) {
         break;
       }
-      Statement statement = parseStatement(tk, itr, scope);
+      if (tk.getType() == Token.CHART) {
+        Chart chart = parseChart(tk, itr, scope);
+        scope.getCharts().add(chart);
+      } else {
+        Statement statement = parseStatement(tk, itr, scope);
+        scope.getStatements().add(statement);
+      }
       if (!itr.hasNext()) {
         log.error("unexpected end of scope");
         throw new Exception("syntax error");
       }
-      scope.getStatements().add(statement);
       tk = itr.next();
     }
   }
