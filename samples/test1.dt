@@ -1,4 +1,1 @@
-include "constants.dt";
-
-N = 5;
-println(N);
+{println(5);

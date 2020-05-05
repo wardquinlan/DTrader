@@ -13,6 +13,10 @@ public class Parser {
 
   public Scope parse(Token tk, TokenIterator itr) throws Exception {
     Scope root = new Scope();
+    parseScope(tk, itr, root);
+    return root;
+    
+    /*
     while (true) {
       if (tk.getType() == Token.CHART) {
         Chart chart = parseChart(tk, itr, root);
@@ -27,6 +31,31 @@ public class Parser {
       tk = itr.next();
     }
     return root;
+    */
+  }
+  
+  private void parseScope(Token tk, TokenIterator itr, Scope scope) throws Exception {
+    if (tk.getType() != Token.LBRACE) {
+      log.error("missing left brace");
+      throw new Exception("syntax error");
+    }
+    if (!itr.hasNext()) {
+      log.error("missing left brace");
+      throw new Exception("syntax error");
+    }
+    tk = itr.next();
+    while (true) {
+      if (tk.getType() == Token.RBRACE) {
+        break;
+      }
+      Statement statement = parseStatement(tk, itr, scope);
+      if (!itr.hasNext()) {
+        log.error("unexpected end of scope");
+        throw new Exception("syntax error");
+      }
+      scope.getStatements().add(statement);
+      tk = itr.next();
+    }
   }
   
   private Chart parseChart(Token tk, TokenIterator itr, Scope scope) throws Exception {
@@ -49,30 +78,9 @@ public class Parser {
       log.error("missing left brace");
       throw new Exception("syntax error: chart");
     }
-    Scope scopeCurr = parseScope(tk, itr, scope);
-    return new Chart(name, scopeCurr);
-  }
-  
-  private Scope parseScope(Token tk, TokenIterator itr, Scope scope) throws Exception {
-    if (!itr.hasNext()) {
-      log.error("invalid scope declaration");
-      throw new Exception("syntax error");
-    }
-    Scope scopeCurr = new Scope(scope);
-    tk = itr.next();
-    while (true) {
-      if (tk.getType() == Token.RBRACE) {
-        break;
-      }
-      Statement statement = parseStatement(tk, itr, scopeCurr);
-      if (!itr.hasNext()) {
-        log.error("unexpected end of scope");
-        throw new Exception("syntax error");
-      }
-      scope.getStatements().add(statement);
-      tk = itr.next();
-    }
-    return scopeCurr;
+    scope = new Scope(scope);
+    parseScope(tk, itr, scope);
+    return new Chart(name, scope);
   }
   
   private Statement parseStatement(Token tk, TokenIterator itr, Scope scope) throws Exception {
