@@ -1,4 +1,4 @@
 include "constants.dt";
 
-set_property("chart.background", #RED);
-
+N = 5;
+println(N);
