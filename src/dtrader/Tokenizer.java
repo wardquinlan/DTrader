@@ -216,7 +216,7 @@ public class Tokenizer {
         listNew.add(tk);
       }
     }
-    if (listNew.size() == 0 || listNew.get(0).getType() != Token.LBRACE) {
+    if (level == 0 && (listNew.size() == 0 || listNew.get(0).getType() != Token.LBRACE)) {
       // surround list with { } if not already present
       listNew.add(0, new Token(Token.LBRACE));
       listNew.add(new Token(Token.RBRACE));
