@@ -48,12 +48,8 @@ public class VisualCommand extends Command {
           JFrame frame = new JFrame("DTrader");
           frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
           JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.BOTTOM);
-          /*
-          for (Chart chart: root.getCharts()) {
-            JPanel panel = new ChartPanel(chart);
-            tabbedPane.addTab(chart.getName(), panel);;
-          }
-          */
+          JPanel panel = new ChartPanel();
+          tabbedPane.addTab("Chart", panel);;
           JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tabbedPane, new JPanel());
           frame.getContentPane().add(splitPane);
           Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
