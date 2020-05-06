@@ -27,15 +27,20 @@ public class Parser {
   
   private void parseStatement(Token tk, TokenIterator itr) throws Exception {
     Statement statement = new Statement();
-    statement.getTokens().add(tk);
-    while (itr.hasNext() && itr.peek().getType() != Token.SEMI) {
-      statement.getTokens().add(itr.next());
+    while (true) {
+      if (tk.getType() == Token.SEMI) {
+        break;
+      }
+      statement.getTokens().add(tk);
+      if (!itr.hasNext()) {
+        log.error("missing semi colon");
+        throw new Exception("syntax error");
+      }
+      tk = itr.next();
     }
-    if (!itr.hasNext()) {
-      log.error("missing semi colon");
-      throw new Exception("syntax error");
+    if (statement.getTokens().size() == 0) {
+      return;
     }
-    itr.next();
     TokenIterator itr2 = new TokenIterator(statement.getTokens());
     Token tk2 = itr2.next();
     if (tk.getType() == Token.CONST) {
