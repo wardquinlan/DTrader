@@ -55,8 +55,6 @@ public class Tokenizer {
             tk = new Token(Token.INC);
           } else if (sb.toString().equals("const")) {
             tk = new Token(Token.CONST);
-          } else if (sb.toString().equals("chart")) {
-            tk = new Token(Token.CHART);
           } else if (funcCaller.isFunction(sb.toString())) {
             tk = new Token(Token.FUNC);
           } else {
@@ -215,11 +213,6 @@ public class Tokenizer {
       } else {
         listNew.add(tk);
       }
-    }
-    if (level == 0 && (listNew.size() == 0 || listNew.get(0).getType() != Token.LBRACE)) {
-      // surround list with { } if not already present
-      listNew.add(0, new Token(Token.LBRACE));
-      listNew.add(new Token(Token.RBRACE));
     }
     return new TokenIterator(listNew);
   }

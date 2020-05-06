@@ -42,16 +42,18 @@ public class VisualCommand extends Command {
 
       Parser parser = new Parser();
       Token tk = itr.next();
-      Scope root = parser.parse(tk, itr);
+      parser.parse(tk, itr);
       javax.swing.SwingUtilities.invokeLater(new Runnable() {
         public void run() {
           JFrame frame = new JFrame("DTrader");
           frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
           JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.BOTTOM);
+          /*
           for (Chart chart: root.getCharts()) {
             JPanel panel = new ChartPanel(chart);
             tabbedPane.addTab(chart.getName(), panel);;
           }
+          */
           JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, tabbedPane, new JPanel());
           frame.getContentPane().add(splitPane);
           Dimension size = Toolkit.getDefaultToolkit().getScreenSize();

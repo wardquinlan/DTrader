@@ -30,7 +30,7 @@ public class ScriptCommand extends Command {
   
       Parser parser = new Parser();
       Token tk = itr.next();
-      Scope root = parser.parse(tk, itr);
+      parser.parse(tk, itr);
     } catch(ParseException e) {
       super.usage("script", options);
       System.exit(1);
