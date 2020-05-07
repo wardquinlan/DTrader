@@ -1,0 +1,61 @@
+<package name="package1">
+  <import path="constants.xml"/>
+  <const name="Blue">#0000ff</const>
+  <paramlist>
+    <param name="N1">40</param>
+    <param name="N2">200</param>
+  </paramlist>
+  <serieslist>
+    <series name="GSPC" datasource="GSPC"/>
+    <series name="GSPC:EPS" datasource="GSPC:EPS"/>
+    <series name="XIC" datasource="XIC"/>
+    <series name="AVG1">average(GSPC, N1)</series>
+    <series name="AVG2">average(GSPC, N2)</series>
+  </serieslist>
+  <system name="SYS1">
+    <begin>
+      <action>set_cash_balance(100000)</action>
+      <action>set_commission_size(10)</action>
+    </begin>
+    <when name="entry">
+      <condition>
+        AVG1 .gt. AVG2
+      </condition>
+      <action>buy(GSPC, 100)</action>
+    </when>
+    <when>
+      <condition>
+        AVG1 .lt. AVG2 .and. position_size(GSPC) .eq. 100
+      </condition>
+      <action>sell(GSPC, 50)</action>
+      <action>buy(HIU, 200)</action>
+    </when>
+    <when>
+      <condition>
+        current_time() .eq. "16:00"
+      </condition>
+      <action>sell(GSPC, position_size(GSPC))</action>
+      <action>sell(HIU, position_size(HIU))</action>
+    </when>
+  </system>
+  <chartlist>
+    <chart name="chart1">
+      <label>Chart 1</label>
+      <background-color>Blue</background-color>
+      <text-color>Black</text-color>
+      <grid-color>Black</grid-color>
+      <axis grids="auto:6" size="70%">
+        <label>Axis 1</label>
+        <render series-name="GSPC" color="Blue" style="synthetic-bar"/>
+        <render series-name="AVG1" color="Green" style="solid-line"/>
+        <render series-name="AVG2" color="Red" style="point"/>
+      </axis>
+      <axis grids="manual:2,4,6,8" size="30%">
+        <label>Axis 2</label>
+        <render series-name="GSPC" color="Blue" style="dotted-line"/>
+      </axis>
+    </chart>
+    <chart name="chart2">
+    </chart>
+  </chartlist>
+</package>
