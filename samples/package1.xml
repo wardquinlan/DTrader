@@ -6,9 +6,9 @@
     <param name="N2">200</param>
   </paramlist>
   <serieslist>
-    <series name="GSPC" datasource="GSPC"/>
-    <series name="GSPC:EPS" datasource="GSPC:EPS"/>
-    <series name="XIC" datasource="XIC"/>
+    <series name="GSPC" sourceid="GSPC"/>
+    <series name="GSPC:EPS" sourceid="GSPC:EPS"/>
+    <series name="XIC" sourceid="XIC"/>
     <series name="AVG1">average(GSPC, N1)</series>
     <series name="AVG2">average(GSPC, N2)</series>
   </serieslist>
