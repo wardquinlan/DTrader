@@ -43,7 +43,7 @@ public class Parser {
     }
     TokenIterator itr2 = new TokenIterator(statement.getTokens());
     Token tk2 = itr2.next();
-    if (tk.getType() == Token.CONST) {
+    if (tk2.getType() == Token.CONST) {
       parseDeclaration(tk2, itr2);
     } else {
       expression(tk2, itr2);
